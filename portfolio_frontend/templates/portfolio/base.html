@@ -1,0 +1,68 @@
+{% load static %}
+<!doctype html>
+<html lang="{{ lang }}" dir="{{ dir }}">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="index,follow" />
+    {% block meta_description %}
+    <meta name="description" content="Yousif Hayder Alzubaidi - Website Developer, Backend Developer, and ML Developer portfolio." />
+    {% endblock %}
+    <link rel="canonical" href="{{ canonical_url }}" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="{{ profile.name }} Portfolio" />
+    <meta property="og:title" content="{% block og_title %}{{ profile.name }} | {{ t.site_title }}{% endblock %}" />
+    <meta property="og:description" content="{% block og_description %}{{ profile.headline }}{% endblock %}" />
+    <meta property="og:url" content="{{ canonical_url }}" />
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'img/og-placeholder.svg' %}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{% block twitter_title %}{{ profile.name }} | {{ t.site_title }}{% endblock %}" />
+    <meta name="twitter:description" content="{% block twitter_description %}{{ profile.headline }}{% endblock %}" />
+    <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'img/og-placeholder.svg' %}" />
+    <meta name="theme-color" content="#0f766e" />
+
+    <title>{% block title %}{{ t.site_title }}{% endblock %}</title>
+    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=4" />
+</head>
+<body>
+    <a class="skip-link clay-pill" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <nav class="container nav" aria-label="Primary">
+            <a href="/{{ lang_query }}" class="brand clay-pill">{{ profile.name }}</a>
+            <div class="links">
+                <a href="/about/{{ lang_query }}" class="clay-pill {% if request.path == '/about/' %}is-active{% endif %}" {% if request.path == '/about/' %}aria-current="page"{% endif %}>{{ t.about }}</a>
+                <a href="/projects/{{ lang_query }}" class="clay-pill {% if request.path == '/projects/' %}is-active{% endif %}" {% if request.path == '/projects/' %}aria-current="page"{% endif %}>{{ t.projects }}</a>
+                <a href="/contact/{{ lang_query }}" class="clay-pill {% if request.path == '/contact/' %}is-active{% endif %}" {% if request.path == '/contact/' %}aria-current="page"{% endif %}>{{ t.contact }}</a>
+            </div>
+            <div class="lang-switcher" aria-label="Language">
+                <a href="{{ request.path }}?lang=en" class="clay-pill {% if lang == 'en' %}is-active{% endif %}" {% if lang == 'en' %}aria-current="true"{% endif %} aria-label="English">EN</a>
+                <a href="{{ request.path }}?lang=tr" class="clay-pill {% if lang == 'tr' %}is-active{% endif %}" {% if lang == 'tr' %}aria-current="true"{% endif %} aria-label="Türkçe">TR</a>
+                <a href="{{ request.path }}?lang=ar" class="clay-pill {% if lang == 'ar' %}is-active{% endif %}" {% if lang == 'ar' %}aria-current="true"{% endif %} aria-label="العربية">AR</a>
+            </div>
+        </nav>
+    </header>
+
+    <main id="main-content" class="container page-shell" tabindex="-1">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <p class="footer-meta">&copy; {% now "Y" %} {{ profile.name }}</p>
+            <div class="footer-links">
+                <a href="/about/{{ lang_query }}">{{ t.about }}</a>
+                <a href="/projects/{{ lang_query }}">{{ t.projects }}</a>
+                <a href="/contact/{{ lang_query }}">{{ t.contact }}</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{% extends "portfolio/base.html" %}
+{% block title %}{{ t.site_title }}{% endblock %}
+{% block meta_description %}
+<meta name="description" content="{{ profile.name }} - {{ profile.headline }}. {{ profile.bio }}" />
+{% endblock %}
+{% block og_title %}{{ profile.name }} | {{ t.site_title }}{% endblock %}
+{% block og_description %}{{ profile.headline }}{% endblock %}
+{% block twitter_title %}{{ profile.name }} | {{ t.site_title }}{% endblock %}
+{% block twitter_description %}{{ profile.headline }}{% endblock %}
+{% block content %}
+<section class="hero hero-panel">
+    <p class="kicker">{{ t.site_title }}</p>
+    <h1 class="page-title">{{ profile.name }}</h1>
+    <p class="headline hero-text">{{ profile.headline }}</p>
+    <p class="hero-text">{{ profile.bio }}</p>
+    <p class="hero-text"><strong>{{ t.location }}:</strong> {{ profile.location }}</p>
+    <ul class="pill-list">
+        {% for role in profile.roles %}
+        <li>{{ role }}</li>
+        {% endfor %}
+    </ul>
+</section>
+
+<section class="content-section">
+    <h2 class="section-title">{{ t.featured_projects }}</h2>
+    <div class="grid">
+        {% for project in projects %}
+        <article class="card card-project reveal" data-category="{{ project.category }}">
+            <p class="category-chip">{{ project.category_label }}</p>
+            <h3>{{ project.title }}</h3>
+            <p>{{ project.description }}</p>
+            <p class="meta-line"><strong>{{ t.stack }}:</strong> {{ project.tech_stack }}</p>
+        </article>
+        {% empty %}
+        <p class="empty-note">{{ t.no_featured_projects }}</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

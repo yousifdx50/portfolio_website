@@ -1,0 +1,26 @@
+{% extends "portfolio/base.html" %}
+{% block title %}{{ t.projects }} | {{ t.site_title }}{% endblock %}
+{% block meta_description %}
+<meta name="description" content="{{ t.projects }} - {{ profile.name }} portfolio projects in web development, backend, and machine learning." />
+{% endblock %}
+{% block og_title %}{{ t.projects }} | {{ profile.name }}{% endblock %}
+{% block og_description %}{{ t.projects }} - {{ profile.headline }}{% endblock %}
+{% block twitter_title %}{{ t.projects }} | {{ profile.name }}{% endblock %}
+{% block twitter_description %}{{ t.projects }} - {{ profile.headline }}{% endblock %}
+{% block content %}
+<section class="content-section">
+<h1 class="page-title">{{ t.projects }}</h1>
+<section class="grid project-grid">
+    {% for project in projects %}
+    <article class="card card-project reveal" data-category="{{ project.category }}">
+        <p class="category-chip">{{ project.category_label }}</p>
+        <h2>{{ project.title }}</h2>
+        <p>{{ project.description }}</p>
+        <p class="meta-line"><strong>{{ t.tech_stack }}:</strong> {{ project.tech_stack }}</p>
+    </article>
+    {% empty %}
+    <p class="empty-note">{{ t.no_projects }}</p>
+</section>
+{% endfor %}
+</section>
+{% endblock %}

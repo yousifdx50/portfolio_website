@@ -1,0 +1,145 @@
+{% extends "portfolio/base.html" %}
+{% block title %}{{ t.about }} | {{ t.site_title }}{% endblock %}
+{% block meta_description %}
+<meta name="description" content="{{ t.about_me }} - {{ profile.bio }}" />
+{% endblock %}
+{% block og_title %}{{ t.about }} | {{ profile.name }}{% endblock %}
+{% block og_description %}{{ profile.headline }}{% endblock %}
+{% block twitter_title %}{{ t.about }} | {{ profile.name }}{% endblock %}
+{% block twitter_description %}{{ profile.headline }}{% endblock %}
+{% block content %}
+<section class="content-section">
+    <article class="card section-card reveal">
+        <h1 class="page-title">{{ t.about_me }}</h1>
+        <p class="hero-text">{{ profile.bio }}</p>
+    </article>
+
+    <div class="about-layout">
+        <article class="card section-card reveal">
+            <h2 class="section-title">{{ t.location }}</h2>
+            <p>{{ profile.location }}</p>
+            <h2 class="section-title">{{ t.core_roles }}</h2>
+            <ul class="list-grid">
+                {% for role in profile.roles %}
+                <li>{{ role }}</li>
+                {% endfor %}
+            </ul>
+        </article>
+
+        <article class="card section-card reveal">
+            <h2 class="section-title">{{ t.contact }}</h2>
+            <ul class="list-grid">
+                <li>
+                    <span class="info-line">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M8 5.5c.6 3.2 2.3 6.1 4.9 8.6 2.5 2.6 5.4 4.3 8.6 4.9l-2.2 2.2c-.6.6-1.6.8-2.4.5-2.5-.8-4.8-2.2-7-4.3-2.1-2.1-3.5-4.4-4.3-7-.3-.8-.1-1.8.5-2.4L8 5.5z" stroke="currentColor" stroke-width="1.8"/>
+                        </svg>
+                        {{ t.phone }}: <bdi class="ltr">{{ profile.phone }}</bdi>
+                    </span>
+                </li>
+                <li>
+                    <span class="info-line">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M4 7h16v10H4V7z" stroke="currentColor" stroke-width="1.8"/>
+                            <path d="M4.5 7.5 12 13l7.5-5.5" stroke="currentColor" stroke-width="1.8"/>
+                        </svg>
+                        {{ t.email }}: <a href="mailto:{{ profile.email }}">{{ profile.email }}</a>
+                    </span>
+                </li>
+                <li>
+                    <span class="info-line">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M9 19c-4 1.5-4-2-5-2" stroke="currentColor" stroke-width="1.8"/>
+                            <path d="M15 22v-3.2c0-.9.3-1.6.8-2.1 2.6-.3 5.2-1.3 5.2-5.9 0-1.3-.5-2.4-1.3-3.3.1-.3.6-1.6-.1-3.3 0 0-1.1-.3-3.5 1.3-2-.6-4.1-.6-6.1 0C7.6 3.9 6.5 4.2 6.5 4.2c-.7 1.7-.2 3-.1 3.3-.8.9-1.3 2-1.3 3.3 0 4.6 2.6 5.6 5.2 5.9.3.3.6.8.7 1.5" stroke="currentColor" stroke-width="1.8"/>
+                        </svg>
+                        {{ t.github }}: <a href="{{ profile.github }}" target="_blank" rel="noopener">{{ profile.github }}</a>
+                    </span>
+                </li>
+                <li>
+                    <span class="info-line">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M6 9v12H3V9h3z" stroke="currentColor" stroke-width="1.8"/>
+                            <path d="M4.5 6.2a1.7 1.7 0 1 0 0-3.4 1.7 1.7 0 0 0 0 3.4z" stroke="currentColor" stroke-width="1.8"/>
+                            <path d="M10 21V9h3v1.7c.7-1.2 2-2.1 3.8-2.1 3 0 4.2 1.9 4.2 5.1V21h-3v-6.2c0-1.6-.3-3-2.1-3-1.8 0-2.4 1.4-2.4 3V21h-3z" stroke="currentColor" stroke-width="1.8"/>
+                        </svg>
+                        {{ t.linkedin }}: <a href="{{ profile.linkedin }}" target="_blank" rel="noopener">{{ profile.linkedin }}</a>
+                    </span>
+                </li>
+            </ul>
+        </article>
+    </div>
+
+    <article class="card section-card reveal">
+        <h2 class="section-title">{{ t.skills }}</h2>
+        <ul class="list-grid">
+            {% for skill in profile.skills %}
+            {% with skill_lower=skill|lower %}
+                {% if 'spring' in skill_lower %}
+                <li data-skill-category="spring"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg><span>{{ skill }}</span></div></li>
+                {% elif 'java' in skill_lower %}
+                <li data-skill-category="java"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg><span>{{ skill }}</span></div></li>
+                {% elif 'fastapi' in skill_lower %}
+                <li data-skill-category="fastapi"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg><span>{{ skill }}</span></div></li>
+                {% elif 'django' in skill_lower %}
+                <li data-skill-category="django"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg><span>{{ skill }}</span></div></li>
+                {% elif 'flask' in skill_lower %}
+                <li data-skill-category="flask"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg><span>{{ skill }}</span></div></li>
+                {% elif 'python' in skill_lower %}
+                <li data-skill-category="python"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg><span>{{ skill }}</span></div></li>
+                {% elif 'postgres' in skill_lower or 'postgresql' in skill_lower %}
+                <li data-skill-category="postgres"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg><span>{{ skill }}</span></div></li>
+                {% elif 'mysql' in skill_lower %}
+                <li data-skill-category="mysql"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg><span>{{ skill }}</span></div></li>
+                {% elif 'sqlite' in skill_lower %}
+                <li data-skill-category="sqlite"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg><span>{{ skill }}</span></div></li>
+                {% elif 'sql' in skill_lower %}
+                <li data-skill-category="sql"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg><span>{{ skill }}</span></div></li>
+                {% elif 'pytorch' in skill_lower %}
+                <li data-skill-category="pytorch"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg><span>{{ skill }}</span></div></li>
+                {% elif 'tensorflow' in skill_lower %}
+                <li data-skill-category="tensorflow"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg><span>{{ skill }}</span></div></li>
+                {% elif 'scikit' in skill_lower or 'sklearn' in skill_lower %}
+                <li data-skill-category="sklearn"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg><span>{{ skill }}</span></div></li>
+                {% elif 'data science' in skill_lower or 'datascience' in skill_lower %}
+                <li data-skill-category="datascience"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg><span>{{ skill }}</span></div></li>
+                {% elif 'machine learning' in skill_lower or skill_lower == 'ml' or ' ml' in skill_lower %}
+                <li data-skill-category="ml"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg><span>{{ skill }}</span></div></li>
+                {% elif 'artificial intelligence' in skill_lower or skill_lower == 'ai' or ' ai' in skill_lower %}
+                <li data-skill-category="ai"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg><span>{{ skill }}</span></div></li>
+                {% elif 'typescript' in skill_lower %}
+                <li data-skill-category="typescript"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg><span>{{ skill }}</span></div></li>
+                {% elif 'javascript' in skill_lower or skill_lower == 'js' or ' js' in skill_lower %}
+                <li data-skill-category="javascript"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg><span>{{ skill }}</span></div></li>
+                {% elif 'react' in skill_lower %}
+                <li data-skill-category="react"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg><span>{{ skill }}</span></div></li>
+                {% elif 'vue' in skill_lower %}
+                <li data-skill-category="vue"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg><span>{{ skill }}</span></div></li>
+                {% elif 'angular' in skill_lower %}
+                <li data-skill-category="angular"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg><span>{{ skill }}</span></div></li>
+                {% elif 'html' in skill_lower %}
+                <li data-skill-category="html"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg><span>{{ skill }}</span></div></li>
+                {% elif 'css' in skill_lower %}
+                <li data-skill-category="css"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg><span>{{ skill }}</span></div></li>
+                {% else %}
+                <li data-skill-category="misc"><div class="info-line"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg><span>{{ skill }}</span></div></li>
+                {% endif %}
+            {% endwith %}
+            {% endfor %}
+        </ul>
+    </article>
+
+    <article class="card section-card reveal">
+        <h2 class="section-title">{{ t.languages }}</h2>
+        <ul class="list-grid">
+            {% for language in profile.languages %}
+            <li data-skill-category="language">
+                <div class="info-line">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    <span>{{ language }}</span>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </article>
+</section>
+{% endblock %}

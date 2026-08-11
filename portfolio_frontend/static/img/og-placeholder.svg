@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Portfolio social preview">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f7f0df"/>
+      <stop offset="100%" stop-color="#dceee7"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#d7863f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1060" cy="120" r="180" fill="#ffffff" opacity="0.55"/>
+  <circle cx="120" cy="560" r="220" fill="#ffffff" opacity="0.35"/>
+  <rect x="84" y="96" width="12" height="438" rx="6" fill="url(#accent)"/>
+  <text x="130" y="240" font-family="'Segoe UI', Arial, sans-serif" font-size="72" font-weight="700" fill="#0a4a45">Yousif Hayder Alzubaidi</text>
+  <text x="130" y="308" font-family="'Segoe UI', Arial, sans-serif" font-size="36" fill="#23424f">Website Developer | Backend Developer | ML Developer</text>
+  <text x="130" y="382" font-family="'Segoe UI', Arial, sans-serif" font-size="28" fill="#3f5966">Multilingual Portfolio built with Django + FastAPI</text>
+  <text x="130" y="470" font-family="'Segoe UI', Arial, sans-serif" font-size="24" fill="#0f766e">github.com/yousifdx50</text>
+</svg>
