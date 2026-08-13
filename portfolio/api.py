@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from pydantic import BaseModel
 from asgiref.sync import sync_to_async
 
@@ -26,9 +26,14 @@ async def health_check():
 
 
 @router.get("/projects", response_model=list[ProjectOut])
-async def get_projects():
+async def get_projects(
+    limit: int = Query(10, gt=0, le=100), offset: int = Query(0, gt=-1)
+):
+    """
+    Get a paginated list of projects.
+    """
     projects = await sync_to_async(list)(
-        Project.objects.order_by("created_at").values(
+        Project.objects.order_by("-created_at")[offset : offset + limit].values(
             "title",
             "description",
             "category",
@@ -38,4 +43,5 @@ async def get_projects():
             "featured",
         )
     )
+
     return projects

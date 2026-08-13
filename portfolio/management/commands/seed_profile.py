@@ -1,4 +1,5 @@
-﻿from django.core.management.base import BaseCommand
+﻿﻿import os
+from django.core.management.base import BaseCommand
 
 from portfolio.models import PortfolioProfile
 
@@ -7,13 +8,14 @@ class Command(BaseCommand):
     help = "Creates or updates a default multilingual portfolio profile"
 
     def handle(self, *args, **options):
-        profile, created = PortfolioProfile.objects.get_or_create(
-            name="Yousif Hayder Alzubaidi",
+        profile, created = PortfolioProfile.objects.update_or_create(
+            id=1,
             defaults={
-                "phone": "+90 531 268 1181",
-                "email": "yousifdx9@gmail.com",
-                "github": "https://github.com/yousifdx50",
-                "linkedin": "https://linkedin.com/in/yousif-hayder-ab8827319",
+                "name": os.environ.get("PORTFOLIO_NAME", "Yousif Hayder Alzubaidi"),
+                "phone": os.environ.get("PORTFOLIO_PHONE", "+90 531 268 1181"),
+                "email": os.environ.get("PORTFOLIO_EMAIL", "yousifdx9@gmail.com"),
+                "github": os.environ.get("PORTFOLIO_GITHUB", "https://github.com/yousifdx50"),
+                "linkedin": os.environ.get("PORTFOLIO_LINKEDIN", "https://linkedin.com/in/yousif-hayder-ab8827319"),
                 "headline_en": "Software Engineering Student | Website Developer | Backend Developer | ML Developer",
                 "headline_tr": (
                     "Yazilim Muhendisligi Ogrencisi | Web Gelistirici | Backend Gelistirici | ML Gelistirici"
@@ -58,7 +60,7 @@ class Command(BaseCommand):
             },
         )
 
-        if not created:
-            self.stdout.write("Profile already exists. No new record created.")
-        else:
+        if created:
             self.stdout.write(self.style.SUCCESS("Default multilingual profile created."))
+        else:
+            self.stdout.write(self.style.SUCCESS("Default profile updated."))
