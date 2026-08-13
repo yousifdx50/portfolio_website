@@ -1,105 +1,8 @@
+from functools import wraps
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
 from .models import PortfolioProfile, Project
-
-PROFILE_BASE = {
-    "name": "Yousif Hayder Alzubaidi",
-    "location": "Ankara, Turkiye",
-    "phone": "+90 531 268 1181",
-    "email": "yousifdx9@gmail.com",
-    "github": "https://github.com/yousifdx50",
-    "linkedin": "https://linkedin.com/in/yousif-hayder-ab8827319",
-    "skills": [
-        "Java",
-        "PostgreSQL",
-        "Spring Boot",
-        "FastAPI",
-        "Flask",
-        "Express.js",
-        "Node.js",
-        "REST APIs",
-        "Python",
-        "C++",
-        "SQL",
-        "Docker",
-        "Linux (Ubuntu/Debian)",
-        "Git/GitHub",
-        "PyTorch",
-        "NumPy",
-        "Pandas",
-        "Matplotlib",
-    ],
-    "languages": [
-        "Arabic (Native)",
-        "English (Advanced - C1)",
-        "Turkish (Upper Intermediate - B2)",
-    ],
-}
-
-PROFILE_LOCALIZED = {
-    "en": {
-        "headline": "Software Engineering Student | Website Developer | Backend Developer | ML Developer",
-        "bio": (
-            "Backend-focused Software Engineering senior at Ostim Technical University with a strong "
-            "foundation in Java, Python, and C++. Passionate about scalable backend systems, RESTful API "
-            "design, and enterprise-level architecture."
-        ),
-        "roles": [
-            "Website Developer",
-            "General Backend Developer",
-            "Machine Learning Developer",
-        ],
-    },
-    "tr": {
-        "headline": (
-            "Yaz\u0131l\u0131m M\u00fchendisli\u011fi \u00d6\u011frencisi | "
-            "Web Geli\u015ftirici | Backend Geli\u015ftirici | ML Geli\u015ftirici"
-        ),
-        "bio": (
-            "Ostim Technical University'de 4. s\u0131n\u0131f Yaz\u0131l\u0131m M\u00fchendisli\u011fi "
-            "\u00f6\u011frencisiyim. Java, Python ve C++ alanlar\u0131nda g\u00fc\u00e7l\u00fc bir temelim var. "
-            "\u00d6l\u00e7eklenebilir backend sistemleri ve REST API geli\u015ftirmeye odaklan\u0131yorum."
-        ),
-        "location": "Ankara, T\u00fcrkiye",
-        "languages": [
-            "Arap\u00e7a (Ana dil)",
-            "\u0130ngilizce (\u0130leri seviye - C1)",
-            "T\u00fcrk\u00e7e (\u00dcst orta seviye - B2)",
-        ],
-        "roles": [
-            "Web Geli\u015ftirici",
-            "Genel Backend Geli\u015ftirici",
-            "Makine \u00d6\u011frenmesi Geli\u015ftirici",
-        ],
-    },
-    "ar": {
-        "headline": (
-            "\u0637\u0627\u0644\u0628 \u0647\u0646\u062f\u0633\u0629 \u0627\u0644\u0628\u0631\u0645\u062c\u064a\u0627\u062a | "
-            "\u0645\u0637\u0648\u0631 \u0648\u064a\u0628 | "
-            "\u0645\u0637\u0648\u0631 \u0628\u0627\u0643 \u0627\u0646\u062f | "
-            "\u0645\u0637\u0648\u0631 \u062a\u0639\u0644\u0645 \u0627\u0644\u0622\u0644\u0629"
-        ),
-        "bio": (
-            "\u0623\u0646\u0627 \u0637\u0627\u0644\u0628 \u0647\u0646\u062f\u0633\u0629 \u0628\u0631\u0645\u062c\u064a\u0627\u062a "
-            "\u0641\u064a \u0627\u0644\u0633\u0646\u0629 \u0627\u0644\u0631\u0627\u0628\u0639\u0629 \u0641\u064a Ostim Technical University. "
-            "\u0644\u062f\u064a \u0623\u0633\u0627\u0633 \u0642\u0648\u064a \u0641\u064a Java \u0648Python \u0648C++. "
-            "\u0623\u0631\u0643\u0632 \u0639\u0644\u0649 \u0628\u0646\u0627\u0621 \u0623\u0646\u0638\u0645\u0629 Backend "
-            "\u0642\u0627\u0628\u0644\u0629 \u0644\u0644\u062a\u0648\u0633\u0639 \u0648\u062a\u0635\u0645\u064a\u0645 REST APIs."
-        ),
-        "location": "\u0623\u0646\u0642\u0631\u0629\u060c \u062a\u0631\u0643\u064a\u0627",
-        "languages": [
-            "\u0627\u0644\u0639\u0631\u0628\u064a\u0629 (\u0627\u0644\u0644\u063a\u0629 \u0627\u0644\u0623\u0645)",
-            "\u0627\u0644\u0625\u0646\u062c\u0644\u064a\u0632\u064a\u0629 (\u0645\u062a\u0642\u062f\u0645 - C1)",
-            "\u0627\u0644\u062a\u0631\u0643\u064a\u0629 (\u0641\u0648\u0642 \u0627\u0644\u0645\u062a\u0648\u0633\u0637 - B2)",
-        ],
-        "roles": [
-            "\u0645\u0637\u0648\u0631 \u0645\u0648\u0627\u0642\u0639 \u0648\u064a\u0628",
-            "\u0645\u0637\u0648\u0631 \u0628\u0627\u0643 \u0627\u0646\u062f \u0639\u0627\u0645",
-            "\u0645\u0637\u0648\u0631 \u062a\u0639\u0644\u0645 \u0627\u0644\u0622\u0644\u0629",
-        ],
-    },
-}
 
 TRANSLATIONS = {
     "en": {
@@ -203,9 +106,6 @@ CATEGORY_LABELS = {
     },
 }
 
-# Default profile for API compatibility.
-PROFILE = {**PROFILE_BASE, **PROFILE_LOCALIZED["en"]}
-
 
 def normalize_lang(lang: str | None) -> str:
     if not lang:
@@ -235,30 +135,44 @@ def get_lang(request: HttpRequest) -> str:
 
 
 def get_profile(lang: str) -> dict:
+    """
+    Fetches the singleton PortfolioProfile from the database and formats it for the template.
+    Returns a dictionary with profile data, or an empty dictionary if not found.
+    """
     safe_lang = normalize_lang(lang)
-    profile = {**PROFILE_BASE, **PROFILE_LOCALIZED[safe_lang]}
     db_profile = PortfolioProfile.objects.first()
     if not db_profile:
-        return profile
+        return {}
 
-    def parse_lines(value: str, fallback: list[str]) -> list[str]:
+    def parse_lines(value: str) -> list[str]:
         items = [line.strip() for line in value.splitlines() if line.strip()]
-        return items or fallback
+        return items
 
     return {
-        **profile,
-        "name": db_profile.name or profile["name"],
-        "phone": db_profile.phone or profile["phone"],
-        "email": db_profile.email or profile["email"],
-        "github": db_profile.github or profile["github"],
-        "linkedin": db_profile.linkedin or profile["linkedin"],
-        "headline": getattr(db_profile, f"headline_{safe_lang}") or profile["headline"],
-        "bio": getattr(db_profile, f"bio_{safe_lang}") or profile["bio"],
-        "location": getattr(db_profile, f"location_{safe_lang}") or profile["location"],
-        "roles": parse_lines(getattr(db_profile, f"roles_{safe_lang}") or "", profile["roles"]),
-        "skills": parse_lines(getattr(db_profile, f"skills_{safe_lang}") or "", profile["skills"]),
-        "languages": parse_lines(getattr(db_profile, f"languages_{safe_lang}") or "", profile["languages"]),
+        "name": db_profile.name,
+        "phone": db_profile.phone,
+        "email": db_profile.email,
+        "github": db_profile.github,
+        "linkedin": db_profile.linkedin,
+        "headline": getattr(db_profile, f"headline_{safe_lang}"),
+        "bio": getattr(db_profile, f"bio_{safe_lang}"),
+        "location": getattr(db_profile, f"location_{safe_lang}"),
+        "roles": parse_lines(getattr(db_profile, f"roles_{safe_lang}")),
+        "skills": parse_lines(getattr(db_profile, f"skills_{safe_lang}")),
+        "languages": parse_lines(getattr(db_profile, f"languages_{safe_lang}")),
     }
+
+
+def set_language_cookie(view_func):
+    """A decorator that sets the language cookie on the response."""
+
+    @wraps(view_func)
+    def _wrapped_view(request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        response = view_func(request, *args, **kwargs)
+        response.set_cookie("lang", get_lang(request), max_age=60 * 60 * 24 * 365, samesite="Lax")
+        return response
+
+    return _wrapped_view
 
 
 def localized_text(project: Project, lang: str) -> tuple[str, str]:
@@ -303,36 +217,30 @@ def build_context(request: HttpRequest) -> dict:
     }
 
 
+@set_language_cookie
 def home(request: HttpRequest) -> HttpResponse:
     lang = get_lang(request)
     featured_projects = Project.objects.filter(featured=True)[:6]
     context = {**build_context(request), "projects": project_cards(featured_projects, lang)}
-    response = render(request, "portfolio/home.html", context)
-    response.set_cookie("lang", lang, max_age=60 * 60 * 24 * 365, samesite="Lax")
-    return response
+    return render(request, "portfolio/home.html", context)
 
 
+@set_language_cookie
 def about(request: HttpRequest) -> HttpResponse:
-    lang = get_lang(request)
-    response = render(request, "portfolio/about.html", build_context(request))
-    response.set_cookie("lang", lang, max_age=60 * 60 * 24 * 365, samesite="Lax")
-    return response
+    return render(request, "portfolio/about.html", build_context(request))
 
 
+@set_language_cookie
 def projects(request: HttpRequest) -> HttpResponse:
     lang = get_lang(request)
     all_projects = Project.objects.all()
-    response = render(
+    return render(
         request,
         "portfolio/projects.html",
         {**build_context(request), "projects": project_cards(all_projects, lang)},
     )
-    response.set_cookie("lang", lang, max_age=60 * 60 * 24 * 365, samesite="Lax")
-    return response
 
 
+@set_language_cookie
 def contact(request: HttpRequest) -> HttpResponse:
-    lang = get_lang(request)
-    response = render(request, "portfolio/contact.html", build_context(request))
-    response.set_cookie("lang", lang, max_age=60 * 60 * 24 * 365, samesite="Lax")
-    return response
+    return render(request, "portfolio/contact.html", build_context(request))
