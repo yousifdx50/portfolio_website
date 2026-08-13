@@ -39,21 +39,24 @@ class Command(BaseCommand):
                 "location_en": "Ankara, Turkiye",
                 "location_tr": "Ankara, Turkiye",
                 "location_ar": "أنقرة، تركيا",
-                "roles_en": "Website Developer\nGeneral Backend Developer\nMachine Learning Developer",
-                "roles_tr": "Web Gelistirici\nGenel Backend Gelistirici\nMakine Ogrenmesi Gelistirici",
-                "roles_ar": "مطور مواقع ويب\nمطور باك اند عام\nمطور تعلم الآلة",
-                "skills_en": (
-                    "Java\nPostgreSQL\nSpring Boot\nFastAPI\nFlask\nExpress.js\nNode.js\nREST APIs\nPython\n"
-                    "C++\nSQL\nDocker\nLinux (Ubuntu/Debian)\nGit/GitHub\nPyTorch\nNumPy\nPandas\nMatplotlib"
-                ),
-                "skills_tr": (
-                    "Java\nPostgreSQL\nSpring Boot\nFastAPI\nFlask\nExpress.js\nNode.js\nREST APIs\nPython\n"
-                    "C++\nSQL\nDocker\nLinux (Ubuntu/Debian)\nGit/GitHub\nPyTorch\nNumPy\nPandas\nMatplotlib"
-                ),
-                "skills_ar": (
-                    "Java\nPostgreSQL\nSpring Boot\nFastAPI\nFlask\nExpress.js\nNode.js\nREST APIs\nPython\n"
-                    "C++\nSQL\nDocker\nLinux (Ubuntu/Debian)\nGit/GitHub\nPyTorch\nNumPy\nPandas\nMatplotlib"
-                ),
+                "roles_en": "Website Developer\n"
+                            "General Backend Developer\n"
+                            "Machine Learning Developer",
+                "roles_tr": "Web Gelistirici\n"
+                            "Genel Backend Gelistirici\n"
+                            "Makine Ogrenmesi Gelistirici",
+                "roles_ar": "مطور مواقع ويب\n"
+                            "مطور باك اند عام\n"
+                            "مطور تعلم الآلة",
+                "skills_en": "Java\nPostgreSQL\nSpring Boot\nFastAPI\nFlask\nExpress.js\nNode.js\nREST APIs\n"
+                             "Python\nC++\nSQL\nDocker\nLinux (Ubuntu/Debian)\nGit/GitHub\nPyTorch\nNumPy\n"
+                             "Pandas\nMatplotlib",
+                "skills_tr": "Java\nPostgreSQL\nSpring Boot\nFastAPI\nFlask\nExpress.js\nNode.js\nREST APIs\n"
+                             "Python\nC++\nSQL\nDocker\nLinux (Ubuntu/Debian)\nGit/GitHub\nPyTorch\nNumPy\n"
+                             "Pandas\nMatplotlib",
+                "skills_ar": "Java\nPostgreSQL\nSpring Boot\nFastAPI\nFlask\nExpress.js\nNode.js\nREST APIs\n"
+                             "Python\nC++\nSQL\nDocker\nLinux (Ubuntu/Debian)\nGit/GitHub\nPyTorch\nNumPy\n"
+                             "Pandas\nMatplotlib",
                 "languages_en": "Arabic (Native)\nEnglish (Advanced - C1)\nTurkish (Upper Intermediate - B2)",
                 "languages_tr": "Arapca (Ana dil)\nIngilizce (Ileri seviye - C1)\nTurkce (Ust orta seviye - B2)",
                 "languages_ar": "العربية (اللغة الأم)\nالإنجليزية (متقدم - C1)\nالتركية (فوق المتوسط - B2)",
