@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from asgiref.sync import sync_to_async
 
 from .models import Project
+from .views import normalize_lang, localized_text
 
 router = APIRouter()
 
@@ -27,21 +28,32 @@ async def health_check():
 
 @router.get("/projects", response_model=list[ProjectOut])
 async def get_projects(
-    limit: int = Query(10, gt=0, le=100), offset: int = Query(0, gt=-1)
+    lang: str = "en",
+    limit: int = Query(10, gt=0, le=100),
+    offset: int = Query(0, ge=0),
 ):
     """
-    Get a paginated list of projects.
+    Get a paginated list of projects, localized to the requested language.
     """
-    projects = await sync_to_async(list)(
-        Project.objects.order_by("-created_at")[offset : offset + limit].values(
-            "title",
-            "description",
-            "category",
-            "tech_stack",
-            "github_url",
-            "live_url",
-            "featured",
-        )
-    )
+    safe_lang = normalize_lang(lang)
 
-    return projects
+    @sync_to_async
+    def _get_projects():
+        projects_qs = Project.objects.order_by("-created_at")[offset : offset + limit]
+        results = []
+        for p in projects_qs:
+            title, description = localized_text(p, safe_lang)
+            # Directly construct ProjectOut from model instance and localized text
+            project_out = ProjectOut(
+                title=title,
+                description=description,
+                category=p.category,
+                tech_stack=p.tech_stack,
+                github_url=p.github_url,
+                live_url=p.live_url,
+                featured=p.featured,
+            )
+            results.append(project_out)
+        return results
+
+    return await _get_projects()

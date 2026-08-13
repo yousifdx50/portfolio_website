@@ -1,13 +1,15 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class Project(models.Model):
     CATEGORY_CHOICES = [
-        ("web_dev", "Website Development"),
-        ("backend_dev", "General Backend Development"),
-        ("ml_dev", "Machine Learning Development"),
+        ("web_dev", _("Website Development")),
+        ("backend_dev", _("General Backend Development")),
+        ("ml_dev", _("Machine Learning Development")),
     ]
 
+    slug = models.SlugField(max_length=120, unique=True, help_text="A unique slug for the project.")
     title = models.CharField(max_length=120)
     title_tr = models.CharField(max_length=120, blank=True)
     title_ar = models.CharField(max_length=120, blank=True)
@@ -67,15 +69,3 @@ class PortfolioProfile(models.Model):
 
     def __str__(self) -> str:
         return self.name or "Portfolio Profile"
-
-    def save(self, *args, **kwargs):
-        self.pk = 1  # Force the primary key to always be 1
-
-        # `QuerySet.create()` calls `save(force_insert=True)`, which breaks the
-        # singleton behavior after the first row exists. We intentionally ignore
-        # `force_insert` and update the existing singleton instead.
-        kwargs.pop("force_insert", None)
-        if self.__class__.objects.filter(pk=1).exists():
-            kwargs["force_update"] = True
-
-        super().save(*args, **kwargs)

@@ -5,6 +5,7 @@ from portfolio.models import Project
 
 SEED_PROJECTS = [
     {
+        "slug": "automation-workflow-system",
         "titles": {
             "en": "Automation Process Workflow System",
             "tr": "Otomasyon S\u00fcre\u00e7 Is Ak\u0131\u015f\u0131 Sistemi",
@@ -29,6 +30,7 @@ SEED_PROJECTS = [
         "tech_stack": "Python, FastAPI, PostgreSQL",
     },
     {
+        "slug": "ecommerce-backend-api",
         "titles": {
             "en": "E-Commerce Backend API",
             "tr": "E-Ticaret Backend API",
@@ -53,16 +55,12 @@ SEED_PROJECTS = [
         "tech_stack": "Java, Spring Boot, PostgreSQL",
     },
     {
+        "slug": "ml-automation-project",
         "titles": {
             "en": "ML and Automation Developer Project",
             "tr": "ML ve Otomasyon Gelistirici Projesi",
             "ar": "\u0645\u0634\u0631\u0648\u0639 \u0645\u0637\u0648\u0631 \u062a\u0639\u0644\u0645 \u0627\u0644\u0622\u0644\u0629 \u0648\u0627\u0644\u0623\u062a\u0645\u062a\u0629",
         },
-        "legacy_titles": [
-            "ML Portfolio Starter",
-            "ML Portf\u00f6y Ba\u015flang\u0131\u00e7 Projesi",
-            "\u0628\u062f\u0627\u064a\u0629 \u0645\u0634\u0631\u0648\u0639 ML \u0644\u0644\u0628\u0648\u0631\u062a\u0641\u0648\u0644\u064a\u0648",
-        ],
         "descriptions": {
             "en": (
                 "An ML and automation development project focused on model pipelines, automated workflows, "
@@ -101,36 +99,28 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         lang = options["lang"]
-        created = 0
+        created_count = 0
+        updated_count = 0
 
         for item in SEED_PROJECTS:
-            defaults = {
-                "title": pick_text(item["titles"], lang),
-                "title_tr": item["titles"]["tr"],
-                "title_ar": item["titles"]["ar"],
-                "description": pick_text(item["descriptions"], lang),
-                "description_tr": item["descriptions"]["tr"],
-                "description_ar": item["descriptions"]["ar"],
-                "category": item["category"],
-                "tech_stack": item["tech_stack"],
-            }
-            existing = Project.objects.filter(
-                category=item["category"],
-                title__in=[
-                    item["titles"]["en"],
-                    item["titles"]["tr"],
-                    item["titles"]["ar"],
-                    *item.get("legacy_titles", []),
-                ],
-            ).first()
+            _, created = Project.objects.update_or_create(
+                slug=item["slug"],
+                defaults={
+                    "title": pick_text(item["titles"], lang),
+                    "title_tr": item["titles"]["tr"],
+                    "title_ar": item["titles"]["ar"],
+                    "description": pick_text(item["descriptions"], lang),
+                    "description_tr": item["descriptions"]["tr"],
+                    "description_ar": item["descriptions"]["ar"],
+                    "category": item["category"],
+                    "tech_stack": item["tech_stack"],
+                },
+            )
+            if created:
+                created_count += 1
+            else:
+                updated_count += 1
 
-            if existing:
-                for field, value in defaults.items():
-                    setattr(existing, field, value)
-                existing.save()
-                continue
-
-            Project.objects.create(**defaults)
-            created += 1
-
-        self.stdout.write(self.style.SUCCESS(f"Seed complete for '{lang}'. Added {created} project(s)."))
+        self.stdout.write(
+            self.style.SUCCESS(f"Seed complete for '{lang}'. Created: {created_count}, Updated: {updated_count}.")
+        )

@@ -1,5 +1,6 @@
 from functools import wraps
 from django.http import HttpRequest, HttpResponse
+from django.core.cache import cache
 from django.shortcuts import render
 
 from .models import PortfolioProfile, Project
@@ -88,24 +89,6 @@ TRANSLATIONS = {
 
 SUPPORTED_LANGS = ("en", "tr", "ar")
 
-CATEGORY_LABELS = {
-    "en": {
-        "web_dev": "Website Development",
-        "backend_dev": "General Backend Development",
-        "ml_dev": "Machine Learning Development",
-    },
-    "tr": {
-        "web_dev": "Web Geli\u015ftirme",
-        "backend_dev": "Genel Backend Geli\u015ftirme",
-        "ml_dev": "Makine \u00d6\u011frenmesi Geli\u015ftirme",
-    },
-    "ar": {
-        "web_dev": "\u062a\u0637\u0648\u064a\u0631 \u0645\u0648\u0627\u0642\u0639 \u0627\u0644\u0648\u064a\u0628",
-        "backend_dev": "\u062a\u0637\u0648\u064a\u0631 \u0627\u0646\u0638\u0645\u0629 Backend \u0639\u0627\u0645",
-        "ml_dev": "\u062a\u0637\u0648\u064a\u0631 \u062d\u0644\u0648\u0644 \u062a\u0639\u0644\u0645 \u0627\u0644\u0627\u0644\u0629",
-    },
-}
-
 
 def normalize_lang(lang: str | None) -> str:
     if not lang:
@@ -139,8 +122,12 @@ def get_profile(lang: str) -> dict:
     Fetches the singleton PortfolioProfile from the database and formats it for the template.
     Returns a dictionary with profile data, or an empty dictionary if not found.
     """
-    safe_lang = normalize_lang(lang)
-    db_profile = PortfolioProfile.objects.first()
+    cache_key = f"profile_data_{lang}"
+    cached_profile = cache.get(cache_key)
+    if cached_profile:
+        return cached_profile
+
+    db_profile = PortfolioProfile.objects.first()  # This hits the DB
     if not db_profile:
         return {}
 
@@ -148,19 +135,22 @@ def get_profile(lang: str) -> dict:
         items = [line.strip() for line in value.splitlines() if line.strip()]
         return items
 
-    return {
+    profile_data = {
         "name": db_profile.name,
         "phone": db_profile.phone,
         "email": db_profile.email,
         "github": db_profile.github,
         "linkedin": db_profile.linkedin,
-        "headline": getattr(db_profile, f"headline_{safe_lang}"),
-        "bio": getattr(db_profile, f"bio_{safe_lang}"),
-        "location": getattr(db_profile, f"location_{safe_lang}"),
-        "roles": parse_lines(getattr(db_profile, f"roles_{safe_lang}")),
-        "skills": parse_lines(getattr(db_profile, f"skills_{safe_lang}")),
-        "languages": parse_lines(getattr(db_profile, f"languages_{safe_lang}")),
+        "headline": getattr(db_profile, f"headline_{lang}"),
+        "bio": getattr(db_profile, f"bio_{lang}"),
+        "location": getattr(db_profile, f"location_{lang}"),
+        "roles": parse_lines(getattr(db_profile, f"roles_{lang}")),
+        "skills": parse_lines(getattr(db_profile, f"skills_{lang}")),
+        "languages": parse_lines(getattr(db_profile, f"languages_{lang}")),
     }
+    # Cache the result for 5 minutes
+    cache.set(cache_key, profile_data, timeout=300)
+    return profile_data
 
 
 def set_language_cookie(view_func):
@@ -176,29 +166,28 @@ def set_language_cookie(view_func):
 
 
 def localized_text(project: Project, lang: str) -> tuple[str, str]:
-    safe_lang = normalize_lang(lang)
-    if safe_lang == "tr":
+    # Assumes lang is already normalized
+    if lang == "tr":
         return project.title_tr or project.title, project.description_tr or project.description
-    if safe_lang == "ar":
+    if lang == "ar":
         return project.title_ar or project.title, project.description_ar or project.description
     return project.title, project.description
 
 
 def project_cards(projects, lang: str) -> list[dict]:
-    safe_lang = normalize_lang(lang)
-    labels = CATEGORY_LABELS[safe_lang]
     cards = []
     for project in projects:
-        title, description = localized_text(project, safe_lang)
+        title, description = localized_text(project, lang)
         cards.append(
             {
                 "title": title,
                 "description": description,
                 "category": project.category,
-                "category_label": labels.get(project.category, project.category),
+                "category_label": project.get_category_display(),
                 "tech_stack": project.tech_stack,
                 "github_url": project.github_url,
                 "live_url": project.live_url,
+                "featured": project.featured,
             }
         )
     return cards
@@ -207,10 +196,13 @@ def project_cards(projects, lang: str) -> list[dict]:
 def build_context(request: HttpRequest) -> dict:
     lang = get_lang(request)
     profile = get_profile(lang)
+    if not profile:
+        return {"lang": lang, "t": TRANSLATIONS.get(lang, TRANSLATIONS["en"]), "profile": None}
+
     return {
         "profile": profile,
         "lang": lang,
-        "t": TRANSLATIONS[lang],
+        "t": TRANSLATIONS.get(lang, TRANSLATIONS["en"]),
         "dir": "rtl" if lang == "ar" else "ltr",
         "lang_query": f"?lang={lang}",
         "canonical_url": request.build_absolute_uri(request.path),
@@ -219,9 +211,11 @@ def build_context(request: HttpRequest) -> dict:
 
 @set_language_cookie
 def home(request: HttpRequest) -> HttpResponse:
-    lang = get_lang(request)
+    context = build_context(request)
+    if not context.get("profile"):
+        return render(request, "portfolio/home.html", context)
     featured_projects = Project.objects.filter(featured=True)[:6]
-    context = {**build_context(request), "projects": project_cards(featured_projects, lang)}
+    context["projects"] = project_cards(featured_projects, context["lang"])
     return render(request, "portfolio/home.html", context)
 
 
@@ -232,13 +226,10 @@ def about(request: HttpRequest) -> HttpResponse:
 
 @set_language_cookie
 def projects(request: HttpRequest) -> HttpResponse:
-    lang = get_lang(request)
+    context = build_context(request)
     all_projects = Project.objects.all()
-    return render(
-        request,
-        "portfolio/projects.html",
-        {**build_context(request), "projects": project_cards(all_projects, lang)},
-    )
+    context["projects"] = project_cards(all_projects, context["lang"])
+    return render(request, "portfolio/projects.html", context)
 
 
 @set_language_cookie
