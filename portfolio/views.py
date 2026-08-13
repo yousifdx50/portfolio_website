@@ -212,9 +212,9 @@ def build_context(request: HttpRequest) -> dict:
 @set_language_cookie
 def home(request: HttpRequest) -> HttpResponse:
     context = build_context(request)
-    if not context.get("profile"):
-        return render(request, "portfolio/home.html", context)
-    featured_projects = Project.objects.filter(featured=True)[:6]
+    featured_projects = []
+    if context.get("profile"):
+        featured_projects = Project.objects.filter(featured=True)[:6]
     context["projects"] = project_cards(featured_projects, context["lang"])
     return render(request, "portfolio/home.html", context)
 
