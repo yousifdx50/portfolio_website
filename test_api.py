@@ -33,30 +33,13 @@ async def test_get_projects_api():
         featured=False,
     )
 
-    # Add a new API endpoint to portfolio/api.py to fetch projects
-    # For this test to pass, you'd need an endpoint like this in portfolio/api.py:
-    #
-    # from typing import List
-    # from pydantic import BaseModel
-    #
-    # class ProjectOut(BaseModel):
-    #     title: str
-    #     description: str
-    #     category: str
-    #     tech_stack: str
-    #     github_url: str | None = None
-    #     live_url: str | None = None
-    #     featured: bool
-    #
-    # @router.get("/projects", response_model=List[ProjectOut])
-    # async def get_projects():
-    #     projects = await sync_to_async(list)(Project.objects.all().values())
-    #     return projects
-
     transport = ASGITransport(app=fastapi_app)
     async with AsyncClient(transport=transport, base_url="http://test") as ac:
+        # The API sorts by -created_at, so the newest project ("API Project 2") will be first.
         response = await ac.get("/api/projects")
+
     assert response.status_code == 200
-    assert len(response.json()) == 2
-    assert response.json()[0]["title"] == "API Project 1"
-    assert response.json()[1]["title"] == "API Project 2"
+    data = response.json()
+    assert len(data) == 2
+    assert data[0]["title"] == "API Project 2"
+    assert data[1]["title"] == "API Project 1"
