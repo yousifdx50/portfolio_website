@@ -196,9 +196,6 @@ def project_cards(projects, lang: str) -> list[dict]:
 def build_context(request: HttpRequest) -> dict:
     lang = get_lang(request)
     profile = get_profile(lang)
-    if not profile:
-        return {"lang": lang, "t": TRANSLATIONS.get(lang, TRANSLATIONS["en"]), "profile": None}
-
     return {
         "profile": profile,
         "lang": lang,

@@ -26,18 +26,16 @@ def csv_env(name: str, default: str = "") -> list[str]:
 
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key-change-me")
 
-DEBUG = os.getenv("DEBUG", "True").lower() == "true"
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 RUNNING_TESTS = (
     "pytest" in sys.modules
     or os.getenv("PYTEST_CURRENT_TEST") is not None
 )
-
 ALLOWED_HOSTS = csv_env(
     "ALLOWED_HOSTS",
     "127.0.0.1,localhost",
 )
-
 CSRF_TRUSTED_ORIGINS = csv_env("CSRF_TRUSTED_ORIGINS")
 
 
@@ -123,37 +121,25 @@ TEMPLATES = [
 #
 # ============================================================
 
-DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
-
-if DATABASE_URL:
-
-    # --------------------------------------------------------
-    # Railway / Production PostgreSQL
-    # --------------------------------------------------------
-
+if "DATABASE_URL" in os.environ:
     DATABASES = {
-        "default": dj_database_url.parse(
-            DATABASE_URL,
+        "default": dj_database_url.config(
             conn_max_age=600,
-            ssl_require=os.getenv(
-                "DB_SSL_REQUIRE",
-                "false"
-            ).lower() == "true",
+            ssl_require=os.getenv("DB_SSL_REQUIRE", "true").lower() == "true",
         )
     }
-
 else:
-
-    # --------------------------------------------------------
-    # Local Development SQLite
-    # --------------------------------------------------------
-
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
+    # If not in production, fall back to SQLite
+    if DEBUG:
+        DATABASES = {
+            "default": {
+                "ENGINE": "django.db.backends.sqlite3",
+                "NAME": BASE_DIR / "db.sqlite3",
+            }
         }
-    }
+    else:
+        # In production, DATABASE_URL is required
+        raise ValueError("DATABASE_URL environment variable not set and DEBUG is False.")
 
 
 # ============================================================
