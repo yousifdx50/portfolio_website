@@ -102,24 +102,33 @@ class Command(BaseCommand):
         created_count = 0
         updated_count = 0
 
-        for item in SEED_PROJECTS:
-            _, created = Project.objects.update_or_create(
-                slug=item["slug"],
-                defaults={
-                    "title": pick_text(item["titles"], lang),
-                    "title_tr": item["titles"]["tr"],
-                    "title_ar": item["titles"]["ar"],
-                    "description": pick_text(item["descriptions"], lang),
-                    "description_tr": item["descriptions"]["tr"],
-                    "description_ar": item["descriptions"]["ar"],
-                    "category": item["category"],
-                    "tech_stack": item["tech_stack"],
-                },
-            )
-            if created:
-                created_count += 1
-            else:
-                updated_count += 1
+        if lang == "en":
+            # On 'en' run, create the base project
+            for item in SEED_PROJECTS:
+                _, created = Project.objects.update_or_create(
+                    slug=item["slug"],
+                    defaults={
+                        "title": item["titles"]["en"],
+                        "description": item["descriptions"]["en"],
+                        "category": item["category"],
+                        "tech_stack": item["tech_stack"],
+                    },
+                )
+                if created: created_count += 1
+                else: updated_count += 1
+        else:
+            # On other language runs, update existing projects
+            for item in SEED_PROJECTS:
+                # Use .update() to ensure we only modify existing projects.
+                # This prevents creating incomplete records.
+                update_data = {
+                    f"title_{lang}": item["titles"][lang],
+                    f"description_{lang}": item["descriptions"][lang],
+                }
+                num_updated = Project.objects.filter(slug=item["slug"]).update(**update_data)
+
+                if num_updated:
+                    updated_count += 1
 
         self.stdout.write(
             self.style.SUCCESS(f"Seed complete for '{lang}'. Created: {created_count}, Updated: {updated_count}.")

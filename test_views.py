@@ -10,6 +10,7 @@ class PortfolioViewsTest(TestCase):
         PortfolioProfile.objects.create(name="Test User", email="test@example.com")
         # Create some projects
         Project.objects.create(
+            slug="web-project",
             title="Web Project",
             description="Web dev project",
             category="web_dev",
@@ -17,6 +18,7 @@ class PortfolioViewsTest(TestCase):
             featured=True,
         )
         Project.objects.create(
+            slug="ml-project",
             title="ML Project",
             description="Machine learning project",
             category="ml_dev",

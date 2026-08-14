@@ -5,6 +5,7 @@ from portfolio.models import Project, PortfolioProfile
 class ProjectModelTest(TestCase):
     def setUp(self):
         self.project_data = {
+            "slug": "test-project",
             "title": "Test Project",
             "description": "A description for the test project.",
             "category": "web_dev",
@@ -46,4 +47,7 @@ class PortfolioProfileModelTest(TestCase):
 
         # Verify only one profile exists and it's the updated one
         self.assertEqual(PortfolioProfile.objects.count(), 1)
-        self.assertEqual(PortfolioProfile.objects.first().name, "New Name")
+        first_profile = PortfolioProfile.objects.first()
+        self.assertIsNotNone(first_profile)
+        assert first_profile is not None
+        self.assertEqual(first_profile.name, "New Name")
