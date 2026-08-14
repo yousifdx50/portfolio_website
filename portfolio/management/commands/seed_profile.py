@@ -1,4 +1,4 @@
-﻿import os
+import os
 from django.core.management.base import BaseCommand
 
 from portfolio.models import PortfolioProfile
@@ -32,7 +32,7 @@ class Command(BaseCommand):
                     "gelistirmeye odaklaniyorum."
                 ),
                 "bio_ar": (
-                    "أنا طالب هندسة برمجيات في السنة الرابعة في Ostim Technical University. "
+                    "أنا طالب هندسة البرمجيات في السنة الرابعة في Ostim Technical University. "
                     "لدي أساس قوي في Java وPython وC++. "
                     "أركز على بناء أنظمة Backend قابلة للتوسع وتصميم REST APIs."
                 ),
@@ -41,6 +41,8 @@ class Command(BaseCommand):
                 "location_ar": "أنقرة، تركيا",
                 "roles_en": "Website Developer\n"
                             "General Backend Developer\n"
+                            "AI Flow Automation Developer\n"
+                            "Website Fullstack Developer\n"
                             "Machine Learning Developer",
                 "roles_tr": "Web Gelistirici\n"
                             "Genel Backend Gelistirici\n"

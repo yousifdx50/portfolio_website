@@ -29,6 +29,7 @@ SECRET_KEY = os.getenv(
     "dev-secret-key-change-me",
 )
 
+
 DEBUG = os.getenv(
     "DEBUG",
     "False",
