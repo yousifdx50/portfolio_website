@@ -24,19 +24,32 @@ def csv_env(name: str, default: str = "") -> list[str]:
 # GENERAL SETTINGS
 # ============================================================
 
-SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key-change-me")
+SECRET_KEY = os.getenv(
+    "SECRET_KEY",
+    "dev-secret-key-change-me",
+)
 
-DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+DEBUG = os.getenv(
+    "DEBUG",
+    "False",
+).lower() == "true"
 
 RUNNING_TESTS = (
     "pytest" in sys.modules
     or os.getenv("PYTEST_CURRENT_TEST") is not None
 )
+
+# Railway / Production / Local hosts
 ALLOWED_HOSTS = csv_env(
     "ALLOWED_HOSTS",
-    "127.0.0.1,localhost",
+    "127.0.0.1,localhost,portfoliowebsite-production-4d9e.up.railway.app",
 )
-CSRF_TRUSTED_ORIGINS = csv_env("CSRF_TRUSTED_ORIGINS")
+
+# CSRF trusted origins
+CSRF_TRUSTED_ORIGINS = csv_env(
+    "CSRF_TRUSTED_ORIGINS",
+    "https://portfoliowebsite-production-4d9e.up.railway.app",
+)
 
 
 # ============================================================
@@ -125,7 +138,10 @@ if "DATABASE_URL" in os.environ:
     DATABASES = {
         "default": dj_database_url.config(
             conn_max_age=600,
-            ssl_require=os.getenv("DB_SSL_REQUIRE", "true").lower() == "true",
+            ssl_require=os.getenv(
+                "DB_SSL_REQUIRE",
+                "true",
+            ).lower() == "true",
         )
     }
 else:
@@ -139,7 +155,10 @@ else:
         }
     else:
         # In production, DATABASE_URL is required
-        raise ValueError("DATABASE_URL environment variable not set and DEBUG is False.")
+        raise ValueError(
+            "DATABASE_URL environment variable not set "
+            "and DEBUG is False."
+        )
 
 
 # ============================================================
@@ -204,7 +223,10 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # MEDIA FILES
 # ============================================================
 
-MEDIA_URL = os.getenv("MEDIA_URL", "/media/")
+MEDIA_URL = os.getenv(
+    "MEDIA_URL",
+    "/media/",
+)
 
 MEDIA_ROOT = BASE_DIR / os.getenv(
     "MEDIA_ROOT",
