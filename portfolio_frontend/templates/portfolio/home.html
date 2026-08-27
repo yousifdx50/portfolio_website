@@ -17,8 +17,8 @@
         <p class="hero-stack">{{ t.hero_stack }}</p>
         <p class="hero-text">{{ profile.bio }}</p>
         <div class="hero-actions">
-            <a class="btn" href="/projects/{{ lang_query }}">{{ t.view_projects }} <span aria-hidden="true">&#8594;</span></a>
-            <a class="btn btn-secondary" href="/contact/{{ lang_query }}">{{ t.contact_me }}</a>
+            <a class="btn" href="{% url 'projects' %}{{ lang_query }}">{{ t.view_projects }} <span aria-hidden="true">&#8594;</span></a>
+            <a class="btn btn-secondary" href="{% url 'contact' %}{{ lang_query }}">{{ t.contact_me }}</a>
         </div>
     </div>
     <div class="hero-aside">
@@ -72,6 +72,6 @@
         <h2 id="final-cta-title">{{ t.final_cta_title }}</h2>
         <p>{{ t.final_cta_text }}</p>
     </div>
-    <a class="btn" href="/contact/{{ lang_query }}">{{ t.work_together }} <span aria-hidden="true">&#8594;</span></a>
+    <a class="btn" href="{% url 'contact' %}{{ lang_query }}">{{ t.work_together }} <span aria-hidden="true">&#8594;</span></a>
 </section>
 {% endblock %}
