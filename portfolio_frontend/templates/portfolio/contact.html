@@ -12,6 +12,10 @@
     <article class="card section-card reveal">
         <h1 class="page-title">{{ t.contact }}</h1>
         <p class="hero-text">{{ t.contact_intro }}</p> 
+        <div class="contact-actions">
+            {% if profile.email %}<a class="btn" href="mailto:{{ profile.email }}">{{ t.work_together }} <span aria-hidden="true">&#8594;</span></a>{% endif %}
+            <a class="btn btn-secondary" href="/projects/{{ lang_query }}">{{ t.view_projects }}</a>
+        </div>
         <ul class="contact-grid">
             <li class="contact-card">
                 <div class="contact-iconwrap" aria-hidden="true">

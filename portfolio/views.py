@@ -28,6 +28,28 @@ TRANSLATIONS = {
         "email": "Email",
         "github": "GitHub",
         "linkedin": "LinkedIn",
+        "backend_identity": "Backend Software Engineer",
+        "hero_statement": "I build reliable backend systems, APIs, and automation products.",
+        "hero_stack": "Java • Spring Boot • Python • PostgreSQL • REST APIs • AI/ML",
+        "view_projects": "View Projects",
+        "contact_me": "Contact Me",
+        "connect": "Connect",
+        "view_project": "View Project",
+        "live_demo": "Live Demo",
+        "what_i_build": "What I Build",
+        "backend_systems": "Backend Systems",
+        "rest_apis": "REST APIs",
+        "ai_machine_learning": "AI & Machine Learning",
+        "automation_systems": "Automation Systems",
+        "tech_stack_section": "Tech Stack",
+        "backend": "Backend",
+        "database": "Database",
+        "ai_data": "AI / Data",
+        "tools": "Tools",
+        "services": "Services / What I Can Build",
+        "final_cta_title": "Have a project in mind?",
+        "final_cta_text": "Let's build it.",
+        "work_together": "Let's Work Together",
     },
     "tr": {
         "site_title": "Portf\u00f6y",
@@ -54,6 +76,28 @@ TRANSLATIONS = {
         "email": "E-posta",
         "github": "GitHub",
         "linkedin": "LinkedIn",
+        "backend_identity": "Backend Yazilim Muhendisi",
+        "hero_statement": "Guvenilir backend sistemleri, API'ler ve otomasyon urunleri gelistiriyorum.",
+        "hero_stack": "Java • Spring Boot • Python • PostgreSQL • REST API'leri • AI/ML",
+        "view_projects": "Projeleri Gor",
+        "contact_me": "Iletisime Gec",
+        "connect": "Baglan",
+        "view_project": "Projeyi Gor",
+        "live_demo": "Canli Demo",
+        "what_i_build": "Ne Insaa Ediyorum",
+        "backend_systems": "Backend Sistemleri",
+        "rest_apis": "REST API'leri",
+        "ai_machine_learning": "Yapay Zeka ve Makine Ogrenmesi",
+        "automation_systems": "Otomasyon Sistemleri",
+        "tech_stack_section": "Teknoloji Yigini",
+        "backend": "Backend",
+        "database": "Veritabani",
+        "ai_data": "AI / Veri",
+        "tools": "Araclar",
+        "services": "Hizmetler / Neler Gelistirebilirim",
+        "final_cta_title": "Aklinda bir proje mi var?",
+        "final_cta_text": "Birlikte gelistirelim.",
+        "work_together": "Birlikte Calisalim",
     },
     "ar": {
         "site_title": "\u0645\u0644\u0641 \u0627\u0644\u0627\u0639\u0645\u0627\u0644",
@@ -84,6 +128,28 @@ TRANSLATIONS = {
         "email": "\u0627\u0644\u0628\u0631\u064a\u062f \u0627\u0644\u0627\u0644\u0643\u062a\u0631\u0648\u0646\u064a",
         "github": "GitHub",
         "linkedin": "LinkedIn",
+        "backend_identity": "مهندس برمجيات Backend",
+        "hero_statement": "أبني أنظمة Backend وواجهات API ومنتجات أتمتة موثوقة.",
+        "hero_stack": "Java • Spring Boot • Python • PostgreSQL • REST APIs • AI/ML",
+        "view_projects": "عرض المشاريع",
+        "contact_me": "تواصل معي",
+        "connect": "تواصل",
+        "view_project": "عرض المشروع",
+        "live_demo": "نسخة مباشرة",
+        "what_i_build": "ما أبنيه",
+        "backend_systems": "أنظمة Backend",
+        "rest_apis": "واجهات REST API",
+        "ai_machine_learning": "الذكاء الاصطناعي وتعلم الآلة",
+        "automation_systems": "أنظمة الأتمتة",
+        "tech_stack_section": "المجموعة التقنية",
+        "backend": "Backend",
+        "database": "قاعدة البيانات",
+        "ai_data": "الذكاء الاصطناعي / البيانات",
+        "tools": "الأدوات",
+        "services": "الخدمات / ما يمكنني بناؤه",
+        "final_cta_title": "هل لديك مشروع في ذهنك؟",
+        "final_cta_text": "لنبنه معاً.",
+        "work_together": "لنعمل معاً",
     },
 }
 
@@ -174,19 +240,41 @@ def localized_text(project: Project, lang: str) -> tuple[str, str]:
     return project.title, project.description
 
 
+def localized_project_details(project: Project, lang: str) -> tuple[str, list[str]]:
+    if lang == "tr":
+        problem_statement = project.problem_statement_tr or project.problem_statement
+        features = project.features_tr or project.features
+    elif lang == "ar":
+        problem_statement = project.problem_statement_ar or project.problem_statement
+        features = project.features_ar or project.features
+    else:
+        problem_statement = project.problem_statement
+        features = project.features
+
+    return problem_statement, [line.strip() for line in features.splitlines() if line.strip()]
+
+
 def project_cards(projects, lang: str) -> list[dict]:
     cards = []
     for project in projects:
         title, description = localized_text(project, lang)
+        problem_statement, features = localized_project_details(project, lang)
+        technologies = [item.strip() for item in project.tech_stack.split(",") if item.strip()]
         cards.append(
             {
                 "title": title,
                 "description": description,
+                "problem_statement": problem_statement,
+                "features": features,
+                "technologies": technologies,
                 "category": project.category,
                 "category_label": project.get_category_display(),
                 "tech_stack": project.tech_stack,
+                "project_image": project.project_image,
+                "architecture_image": project.architecture_image,
                 "github_url": project.github_url,
                 "live_url": project.live_url,
+                "primary_url": project.live_url or project.github_url,
                 "featured": project.featured,
             }
         )
@@ -196,10 +284,31 @@ def project_cards(projects, lang: str) -> list[dict]:
 def build_context(request: HttpRequest) -> dict:
     lang = get_lang(request)
     profile = get_profile(lang)
+    translations = TRANSLATIONS.get(lang, TRANSLATIONS["en"])
     return {
         "profile": profile,
         "lang": lang,
-        "t": TRANSLATIONS.get(lang, TRANSLATIONS["en"]),
+        "t": translations,
+        "capabilities": [
+            {"title": translations["backend_systems"], "description": "Scalable services and maintainable business logic."},
+            {"title": translations["rest_apis"], "description": "Secure, documented APIs that connect products and data."},
+            {"title": translations["ai_machine_learning"], "description": "Practical data and model workflows for production use."},
+            {"title": translations["automation_systems"], "description": "Reliable workflows that reduce repetitive operational work."},
+        ],
+        "tech_stack_groups": [
+            {"title": translations["backend"], "items": ["Java", "Spring Boot", "Python", "FastAPI"]},
+            {"title": translations["database"], "items": ["PostgreSQL", "MySQL"]},
+            {"title": translations["ai_data"], "items": ["PyTorch", "Pandas", "NumPy"]},
+            {"title": translations["tools"], "items": ["Git", "Docker", "REST APIs"]},
+        ],
+        "services": [
+            "Custom REST APIs",
+            "Backend applications",
+            "Database systems",
+            "Automation software",
+            "AI/ML applications",
+            "E-commerce backends",
+        ],
         "dir": "rtl" if lang == "ar" else "ltr",
         "lang_query": f"?lang={lang}",
         "canonical_url": request.build_absolute_uri(request.path),

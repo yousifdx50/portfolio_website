@@ -5,9 +5,9 @@ from portfolio.models import Project
 
 SEED_PROJECTS = [
     {
-        "slug": "automation-workflow-system",
+        "slug": "process-automation-engine",
         "titles": {
-            "en": "Automation Process Workflow System",
+            "en": "Process Automation Engine",
             "tr": "Otomasyon S\u00fcre\u00e7 Is Ak\u0131\u015f\u0131 Sistemi",
             "ar": "\u0646\u0638\u0627\u0645 \u0623\u062a\u0645\u062a\u0629 \u0633\u064a\u0631 \u0627\u0644\u0639\u0645\u0644",
         },
@@ -28,11 +28,15 @@ SEED_PROJECTS = [
         },
         "category": "backend_dev",
         "tech_stack": "Python, FastAPI, PostgreSQL",
+        "problem_statement": "A backend platform for modeling complex automation workflows with reliable state transitions.",
+        "features": "Workflow state management\nREST API endpoints\nReliable process transitions\nPostgreSQL persistence",
+        "project_image": "img/projects/process-automation-engine.svg",
+        "architecture_image": "img/projects/process-automation-engine-architecture.svg",
     },
     {
-        "slug": "ecommerce-backend-api",
+        "slug": "commerce-core-api",
         "titles": {
-            "en": "E-Commerce Backend API",
+            "en": "Commerce Core API",
             "tr": "E-Ticaret Backend API",
             "ar": "\u0648\u0627\u062c\u0647\u0629 Backend \u0644\u0645\u062a\u062c\u0631 \u0625\u0644\u0643\u062a\u0631\u0648\u0646\u064a",
         },
@@ -53,11 +57,15 @@ SEED_PROJECTS = [
         },
         "category": "web_dev",
         "tech_stack": "Java, Spring Boot, PostgreSQL",
+        "problem_statement": "A backend API designed to manage products, inventory, customers, and orders for an online store.",
+        "features": "JWT authentication\nRole-based authorization\nProduct management\nInventory management\nOrder processing\nPostgreSQL persistence",
+        "project_image": "img/projects/commerce-core-api.svg",
+        "architecture_image": "img/projects/commerce-core-api-architecture.svg",
     },
     {
-        "slug": "ml-automation-project",
+        "slug": "ml-automation-pipeline",
         "titles": {
-            "en": "ML and Automation Developer Project",
+            "en": "ML Automation Pipeline",
             "tr": "ML ve Otomasyon Gelistirici Projesi",
             "ar": "\u0645\u0634\u0631\u0648\u0639 \u0645\u0637\u0648\u0631 \u062a\u0639\u0644\u0645 \u0627\u0644\u0622\u0644\u0629 \u0648\u0627\u0644\u0623\u062a\u0645\u062a\u0629",
         },
@@ -78,6 +86,10 @@ SEED_PROJECTS = [
         },
         "category": "ml_dev",
         "tech_stack": "PyTorch, NumPy, Pandas, Matplotlib",
+        "problem_statement": "A practical pipeline for preparing data, running machine-learning workflows, and visualizing results.",
+        "features": "Data preparation\nModel pipeline execution\nAutomated workflows\nResult visualization",
+        "project_image": "img/projects/ml-automation-pipeline.svg",
+        "architecture_image": "img/projects/ml-automation-pipeline-architecture.svg",
     },
 ]
 
@@ -112,6 +124,10 @@ class Command(BaseCommand):
                         "description": item["descriptions"]["en"],
                         "category": item["category"],
                         "tech_stack": item["tech_stack"],
+                        "problem_statement": item["problem_statement"],
+                        "features": item["features"],
+                        "project_image": item["project_image"],
+                        "architecture_image": item["architecture_image"],
                     },
                 )
                 if created: created_count += 1

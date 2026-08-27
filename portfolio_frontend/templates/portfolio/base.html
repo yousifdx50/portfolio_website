@@ -30,22 +30,22 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=4" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=5" />
 </head>
 <body>
-    <a class="skip-link clay-pill" href="#main-content">Skip to content</a>
+    <a class="skip-link btn" href="#main-content">Skip to content</a>
     <header class="site-header">
         <nav class="container nav" aria-label="Primary">
-            <a href="/{{ lang_query }}" class="brand clay-pill">{{ profile.name }}</a>
+            <a href="/{{ lang_query }}" class="brand">{{ profile.name }}</a>
             <div class="links">
-                <a href="/about/{{ lang_query }}" class="clay-pill {% if request.path == '/about/' %}is-active{% endif %}" {% if request.path == '/about/' %}aria-current="page"{% endif %}>{{ t.about }}</a>
-                <a href="/projects/{{ lang_query }}" class="clay-pill {% if request.path == '/projects/' %}is-active{% endif %}" {% if request.path == '/projects/' %}aria-current="page"{% endif %}>{{ t.projects }}</a>
-                <a href="/contact/{{ lang_query }}" class="clay-pill {% if request.path == '/contact/' %}is-active{% endif %}" {% if request.path == '/contact/' %}aria-current="page"{% endif %}>{{ t.contact }}</a>
+                <a href="/about/{{ lang_query }}" class="{% if request.path == '/about/' %}is-active{% endif %}" {% if request.path == '/about/' %}aria-current="page"{% endif %}>{{ t.about }}</a>
+                <a href="/projects/{{ lang_query }}" class="{% if request.path == '/projects/' %}is-active{% endif %}" {% if request.path == '/projects/' %}aria-current="page"{% endif %}>{{ t.projects }}</a>
+                <a href="/contact/{{ lang_query }}" class="{% if request.path == '/contact/' %}is-active{% endif %}" {% if request.path == '/contact/' %}aria-current="page"{% endif %}>{{ t.contact }}</a>
             </div>
             <div class="lang-switcher" aria-label="Language">
-                <a href="{{ request.path }}?lang=en" class="clay-pill {% if lang == 'en' %}is-active{% endif %}" {% if lang == 'en' %}aria-current="true"{% endif %} aria-label="English">EN</a>
-                <a href="{{ request.path }}?lang=tr" class="clay-pill {% if lang == 'tr' %}is-active{% endif %}" {% if lang == 'tr' %}aria-current="true"{% endif %} aria-label="Türkçe">TR</a>
-                <a href="{{ request.path }}?lang=ar" class="clay-pill {% if lang == 'ar' %}is-active{% endif %}" {% if lang == 'ar' %}aria-current="true"{% endif %} aria-label="العربية">AR</a>
+                <a href="{{ request.path }}?lang=en" class="{% if lang == 'en' %}is-active{% endif %}" {% if lang == 'en' %}aria-current="true"{% endif %} aria-label="English">EN</a>
+                <a href="{{ request.path }}?lang=tr" class="{% if lang == 'tr' %}is-active{% endif %}" {% if lang == 'tr' %}aria-current="true"{% endif %} aria-label="Türkçe">TR</a>
+                <a href="{{ request.path }}?lang=ar" class="{% if lang == 'ar' %}is-active{% endif %}" {% if lang == 'ar' %}aria-current="true"{% endif %} aria-label="العربية">AR</a>
             </div>
         </nav>
     </header>
@@ -62,7 +62,13 @@
                 <a href="/projects/{{ lang_query }}">{{ t.projects }}</a>
                 <a href="/contact/{{ lang_query }}">{{ t.contact }}</a>
             </div>
+            <div class="social-links" aria-label="Social links">
+                {% if profile.github %}<a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub">GH</a>{% endif %}
+                {% if profile.linkedin %}<a href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">in</a>{% endif %}
+                {% if profile.email %}<a href="mailto:{{ profile.email }}" aria-label="Email">@</a>{% endif %}
+            </div>
         </div>
     </footer>
+    <script src="{% static 'js/site.js' %}?v=1" defer></script>
 </body>
 </html>

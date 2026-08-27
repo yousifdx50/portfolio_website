@@ -16,15 +16,19 @@ class Command(BaseCommand):
                 "email": os.environ.get("PORTFOLIO_EMAIL", "yousifdx9@gmail.com"),
                 "github": os.environ.get("PORTFOLIO_GITHUB", "https://github.com/yousifdx50"),
                 "linkedin": os.environ.get("PORTFOLIO_LINKEDIN", "https://linkedin.com/in/yousif-hayder-ab8827319"),
-                "headline_en": "Software Engineering Student | Website Developer | Backend Developer | ML Developer",
+                "headline_en": "Backend Software Engineer",
                 "headline_tr": (
-                    "Yazilim Muhendisligi Ogrencisi | Web Gelistirici | Backend Gelistirici | ML Gelistirici"
+                    "Backend Yazilim Muhendisi"
                 ),
-                "headline_ar": "طالب هندسة البرمجيات | مطور ويب | مطور باك اند | مطور تعلم الآلة",
+                "headline_ar": "مهندس برمجيات Backend",
                 "bio_en": (
-                    "Backend-focused Software Engineering senior at Ostim Technical University with a strong "
-                    "foundation in Java, Python, and C++. Passionate about scalable backend systems, RESTful "
-                    "API design, and enterprise-level architecture."
+                    "I am a backend-focused Software Engineering senior at Ostim Technical University. I design "
+                    "reliable services, REST APIs, and database-backed applications with Java, Spring Boot, "
+                    "Python, and FastAPI. My work focuses on clear service boundaries, maintainable business "
+                    "logic, secure data access, and practical automation. I also build machine-learning and "
+                    "data workflows with PyTorch, Pandas, and NumPy when intelligent features add real value. "
+                    "I enjoy turning complex requirements into focused systems that are easy to operate, extend, "
+                    "and explain."
                 ),
                 "bio_tr": (
                     "Ostim Technical University'de 4. sinif Yazilim Muhendisligi ogrencisiyim. Java, Python "

@@ -14,6 +14,40 @@
         <p class="hero-text">{{ profile.bio }}</p>
     </article>
 
+    <section class="content-section capability-section">
+        <h2 class="section-title">{{ t.what_i_build }}</h2>
+        <div class="grid capability-grid">
+            {% for capability in capabilities %}
+            <article class="card capability-card reveal">
+                <span class="capability-number">0{{ forloop.counter }}</span>
+                <h3>{{ capability.title }}</h3>
+                <p>{{ capability.description }}</p>
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="content-section stack-section">
+        <h2 class="section-title">{{ t.tech_stack_section }}</h2>
+        <div class="stack-groups">
+            {% for group in tech_stack_groups %}
+            <article class="stack-group reveal">
+                <h3>{{ group.title }}</h3>
+                <div class="tech-badges">
+                    {% for item in group.items %}<span>{{ item }}</span>{% endfor %}
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="content-section services-section">
+        <h2 class="section-title">{{ t.services }}</h2>
+        <ul class="service-list">
+            {% for service in services %}<li>{{ service }} <span aria-hidden="true">&#8594;</span></li>{% endfor %}
+        </ul>
+    </section>
+
     <div class="about-layout">
         <article class="card section-card reveal">
             <h2 class="section-title">{{ t.location }}</h2>

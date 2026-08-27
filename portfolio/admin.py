@@ -14,6 +14,12 @@ class ProjectAdmin(admin.ModelAdmin):
         "description",
         "description_tr",
         "description_ar",
+        "problem_statement",
+        "problem_statement_tr",
+        "problem_statement_ar",
+        "features",
+        "features_tr",
+        "features_ar",
         "tech_stack",
     )
 

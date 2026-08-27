@@ -16,6 +16,18 @@ class Project(models.Model):
     description = models.TextField()
     description_tr = models.TextField(blank=True)
     description_ar = models.TextField(blank=True)
+    problem_statement = models.TextField(blank=True)
+    problem_statement_tr = models.TextField(blank=True)
+    problem_statement_ar = models.TextField(blank=True)
+    features = models.TextField(blank=True, help_text="One feature per line")
+    features_tr = models.TextField(blank=True, help_text="One feature per line")
+    features_ar = models.TextField(blank=True, help_text="One feature per line")
+    project_image = models.CharField(max_length=255, blank=True, help_text="Static path for the project visual")
+    architecture_image = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text="Static path for the architecture or database diagram",
+    )
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     tech_stack = models.CharField(max_length=255)
     github_url = models.URLField(blank=True)
