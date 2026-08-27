@@ -24,9 +24,9 @@
     <div class="hero-aside">
         <p class="hero-aside-label">{{ t.connect }}</p>
         <div class="hero-socials">
-            {% if profile.github %}<a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub">GH</a>{% endif %}
-            {% if profile.linkedin %}<a href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">in</a>{% endif %}
-            {% if profile.email %}<a href="mailto:{{ profile.email }}" aria-label="Email">@</a>{% endif %}
+            {% if profile.github %}<a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub"><svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4 1.5-4-2-5-2"/><path d="M15 22v-3.2c0-.9.3-1.6.8-2.1 2.6-.3 5.2-1.3 5.2-5.9 0-1.3-.5-2.4-1.3-3.3.1-.3.6-1.6-.1-3.3 0 0-1.1-.3-3.5 1.3-2-.6-4.1-.6-6.1 0C7.6 3.9 6.5 4.2 6.5 4.2c-.7 1.7-.2 3-.1 3.3-.8.9-1.3 2-1.3 3.3 0 4.6 2.6 5.6 5.2 5.9.3.3.6.8.7 1.5"/></svg></a>{% endif %}
+            {% if profile.linkedin %}<a href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn"><svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9v12H3V9h3zM4.5 6.2a1.7 1.7 0 1 0 0-3.4 1.7 1.7 0 0 0 0 3.4zM10 21V9h3v1.7c.7-1.2 2-2.1 3.8-2.1 3 0 4.2 1.9 4.2 5.1V21h-3v-6.2c0-1.6-.3-3-2.1-3-1.8 0-2.4 1.4-2.4 3V21h-3z"/></svg></a>{% endif %}
+            {% if profile.email %}<a href="mailto:{{ profile.email }}" aria-label="Email" title="Email"><svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v10H4V7zM4.5 7.5 12 13l7.5-5.5"/></svg></a>{% endif %}
         </div>
         <p class="hero-location"><strong>{{ t.location }}</strong><br>{{ profile.location }}</p>
     </div>

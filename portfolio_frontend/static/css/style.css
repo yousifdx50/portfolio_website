@@ -506,6 +506,8 @@ html[dir="rtl"] .contact-card { text-align: right; }
 :root {
     --bg-color: #0b1015;
     --clay-surface: #111820;
+    --surface: #111820;
+    --surface-raised: #17212b;
     --ink: #edf4f2;
     --muted: #a7b5b8;
     --accent: #4dd6c0;
@@ -544,11 +546,19 @@ a:hover { color: var(--accent-deep); }
 .meta-line strong, .card h2, .card h3, .contact-title, label { color: var(--ink); }
 .contact-iconwrap { border: 1px solid var(--border); border-radius: 8px; background: #17212b; box-shadow: none; }
 .contact-icon { color: var(--accent); }
+.contact-icon-link { text-decoration: none; transition: border-color .2s ease, background-color .2s ease, color .2s ease; }
+.contact-icon-link:hover { color: var(--accent); border-color: var(--border-strong); background: var(--surface-raised); }
+.contact-icon-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; box-shadow: none; }
+.contact-card .contact-link { color: var(--muted); text-decoration: none; }
+.contact-card .contact-link:hover { color: var(--muted); }
 .btn { border: 1px solid var(--accent); border-radius: 8px; color: #061411; background: var(--accent); box-shadow: none; }
 .btn:hover { color: #061411; background: var(--accent-deep); box-shadow: var(--btn-shadow-hover); }
 input[type="text"], input[type="email"], input[type="tel"], input[type="url"], input[type="search"], input[type="password"], textarea, select { border: 1px solid var(--border); border-radius: 8px; color: var(--ink); background: var(--clay-surface); box-shadow: none; }
 .site-footer { border-top: 1px solid var(--border); background: #080c10; }
 .footer-links a { color: var(--muted); }
+.social-links a { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border: 1px solid var(--border); border-radius: 50%; color: var(--muted); text-decoration: none; transition: border-color .2s ease, color .2s ease, background-color .2s ease; }
+.social-links a:hover { color: var(--accent); border-color: var(--border-strong); background: rgba(77, 214, 192, .06); }
+.social-icon { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 @keyframes phase-two-drift { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-12px, 10px); } }
 @media (hover: hover) and (pointer: fine) { .card:hover, .card:focus-within { border-color: rgba(77, 214, 192, .38); box-shadow: var(--card-shadow-hover); } }
 @media (max-width: 760px) { .page-shell { padding-top: 2.5rem; } .hero-panel { padding: 2rem 1.25rem; } .footer-grid { align-items: flex-start; flex-direction: column; } }
