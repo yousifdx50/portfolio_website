@@ -625,11 +625,12 @@ html[dir="rtl"] .hero-aside { padding-right: 1.25rem; padding-left: 0; border-ri
 @media (max-width: 760px) { .hero-panel { grid-template-columns: 1fr; gap: 2rem; } .hero-aside { padding-top: 1.25rem; padding-right: 0; padding-left: 0; border-top: 1px solid var(--border); border-right: 0; border-left: 0; } html[dir="rtl"] .hero-aside { padding-right: 0; border-right: 0; } }
 
 /* Phase 7 motion and accessibility polish */
-html.js .reveal { opacity: 0; transform: translateY(16px); animation: none; }
-html.js .reveal.is-visible { animation: reveal-up .55s ease var(--reveal-delay, 0ms) forwards; }
+html.js .reveal { opacity: 1; transform: none; animation: phase-seven-reveal .55s ease var(--reveal-delay, 0ms) both; }
+html.js .reveal.is-visible { opacity: 1; transform: none; animation: phase-seven-reveal .55s ease var(--reveal-delay, 0ms) both; }
 :where(a, button, input, textarea, select):focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 body { overflow-x: hidden; }
 img { max-width: 100%; height: auto; }
 .card, .contact-card, .stack-group, .final-cta { overflow-wrap: anywhere; }
 @media (max-width: 760px) { .container { width: min(100% - 2rem, 1080px); } .project-links .btn, .project-links .text-link { min-height: 38px; } }
 @media (prefers-reduced-motion: reduce) { html.js .reveal, html.js .reveal.is-visible { opacity: 1; transform: none; animation: none; } }
+@keyframes phase-seven-reveal { from { transform: translateY(16px); } to { transform: translateY(0); } }
