@@ -661,3 +661,19 @@ img { max-width: 100%; height: auto; }
     border-color: var(--border-strong);
     box-shadow: 0 10px 28px rgba(0, 0, 0, .2);
 }
+
+/* Keep contact cards calm on hover. */
+.contact-card:hover,
+.contact-card:focus-within {
+    transform: none;
+    color: inherit;
+    background: var(--clay-surface);
+    border-color: var(--border-strong);
+    box-shadow: var(--card-shadow);
+}
+.contact-card:hover .contact-icon-link,
+.contact-card:focus-within .contact-icon-link {
+    color: var(--accent);
+    background: #17212b;
+    border-color: var(--border-strong);
+}
