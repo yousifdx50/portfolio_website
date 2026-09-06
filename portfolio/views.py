@@ -1,7 +1,9 @@
 from functools import wraps
 from django.http import HttpRequest, HttpResponse
 from django.core.cache import cache
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+from django.utils.html import escape
 
 from .models import PortfolioProfile, Project
 
@@ -46,10 +48,25 @@ TRANSLATIONS = {
         "database": "Database",
         "ai_data": "AI / Data",
         "tools": "Tools",
+        "filter_all": "All",
+        "filter_backend": "Backend",
+        "filter_web": "Web",
+        "filter_ai": "AI / Data",
         "services": "Services / What I Can Build",
         "final_cta_title": "Have a project in mind?",
         "final_cta_text": "Let's build it.",
         "work_together": "Let's Work Together",
+        "case_study": "Case Study",
+        "overview": "Overview",
+        "problem": "Problem",
+        "solution": "Solution",
+        "architecture": "Architecture",
+        "name": "Name",
+        "company": "Company",
+        "project_type": "Project Type",
+        "message": "Message",
+        "send_message": "Send Message",
+        "inquiry_placeholder": "Tell me what you are building...",
     },
     "tr": {
         "site_title": "Portf\u00f6y",
@@ -94,10 +111,25 @@ TRANSLATIONS = {
         "database": "Veritabani",
         "ai_data": "AI / Veri",
         "tools": "Araclar",
+        "filter_all": "Tumu",
+        "filter_backend": "Backend",
+        "filter_web": "Web",
+        "filter_ai": "AI / Veri",
         "services": "Hizmetler / Neler Gelistirebilirim",
         "final_cta_title": "Aklinda bir proje mi var?",
         "final_cta_text": "Birlikte gelistirelim.",
         "work_together": "Birlikte Calisalim",
+        "case_study": "Vaka Calismasi",
+        "overview": "Genel Bakis",
+        "problem": "Problem",
+        "solution": "Cozum",
+        "architecture": "Mimari",
+        "name": "Ad",
+        "company": "Sirket",
+        "project_type": "Proje Turu",
+        "message": "Mesaj",
+        "send_message": "Mesaj Gonder",
+        "inquiry_placeholder": "Ne gelistirmek istediginizi anlatin...",
     },
     "ar": {
         "site_title": "\u0645\u0644\u0641 \u0627\u0644\u0627\u0639\u0645\u0627\u0644",
@@ -146,10 +178,25 @@ TRANSLATIONS = {
         "database": "قاعدة البيانات",
         "ai_data": "الذكاء الاصطناعي / البيانات",
         "tools": "الأدوات",
+        "filter_all": "الكل",
+        "filter_backend": "Backend",
+        "filter_web": "الويب",
+        "filter_ai": "الذكاء الاصطناعي / البيانات",
         "services": "الخدمات / ما يمكنني بناؤه",
         "final_cta_title": "هل لديك مشروع في ذهنك؟",
         "final_cta_text": "لنبنه معاً.",
         "work_together": "لنعمل معاً",
+        "case_study": "دراسة الحالة",
+        "overview": "نظرة عامة",
+        "problem": "المشكلة",
+        "solution": "الحل",
+        "architecture": "البنية المعمارية",
+        "name": "الاسم",
+        "company": "الشركة",
+        "project_type": "نوع المشروع",
+        "message": "الرسالة",
+        "send_message": "إرسال الرسالة",
+        "inquiry_placeholder": "أخبرني بما تريد بناءه...",
     },
 }
 
@@ -262,6 +309,7 @@ def project_cards(projects, lang: str) -> list[dict]:
         technologies = [item.strip() for item in project.tech_stack.split(",") if item.strip()]
         cards.append(
             {
+                "slug": project.slug,
                 "title": title,
                 "description": description,
                 "problem_statement": problem_statement,
@@ -301,6 +349,12 @@ def build_context(request: HttpRequest) -> dict:
             {"title": translations["ai_data"], "items": ["PyTorch", "Pandas", "NumPy"]},
             {"title": translations["tools"], "items": ["Git", "Docker", "REST APIs"]},
         ],
+        "project_filters": [
+            {"key": "all", "label": translations["filter_all"]},
+            {"key": "backend_dev", "label": translations["filter_backend"]},
+            {"key": "web_dev", "label": translations["filter_web"]},
+            {"key": "ml_dev", "label": translations["filter_ai"]},
+        ],
         "services": [
             "Custom REST APIs",
             "Backend applications",
@@ -339,5 +393,31 @@ def projects(request: HttpRequest) -> HttpResponse:
 
 
 @set_language_cookie
+def project_detail(request: HttpRequest, slug: str) -> HttpResponse:
+    context = build_context(request)
+    project = get_object_or_404(Project, slug=slug)
+    context["project"] = project_cards([project], context["lang"])[0]
+    return render(request, "portfolio/project_detail.html", context)
+
+
+@set_language_cookie
 def contact(request: HttpRequest) -> HttpResponse:
     return render(request, "portfolio/contact.html", build_context(request))
+
+
+def robots_txt(request: HttpRequest) -> HttpResponse:
+    sitemap_url = request.build_absolute_uri(reverse("sitemap"))
+    content = f"User-agent: *\nAllow: /\n\nSitemap: {sitemap_url}\n"
+    return HttpResponse(content, content_type="text/plain")
+
+
+def sitemap_xml(request: HttpRequest) -> HttpResponse:
+    static_paths = ["home", "about", "projects", "contact"]
+    urls = [request.build_absolute_uri(reverse(path_name)) for path_name in static_paths]
+    urls.extend(
+        request.build_absolute_uri(reverse("project_detail", kwargs={"slug": project.slug}))
+        for project in Project.objects.all()
+    )
+    entries = "\n".join(f"    <url><loc>{escape(url)}</loc></url>" for url in urls)
+    content = f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{entries}\n</urlset>\n'
+    return HttpResponse(content, content_type="application/xml")

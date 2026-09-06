@@ -79,5 +79,13 @@ class PortfolioProfile(models.Model):
         verbose_name = "Portfolio Profile"
         verbose_name_plural = "Portfolio Profile"
 
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            existing = type(self).objects.first()
+            if existing is not None:
+                self.pk = existing.pk
+                kwargs["force_insert"] = False
+        super().save(*args, **kwargs)
+
     def __str__(self) -> str:
         return self.name or "Portfolio Profile"

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Query
 from pydantic import BaseModel
 from asgiref.sync import sync_to_async
 
-from .models import Project
+from .models import PortfolioProfile, Project
 from .views import normalize_lang, localized_text
 
 router = APIRouter()
@@ -16,6 +16,17 @@ class ProjectOut(BaseModel):
     github_url: str | None = None
     live_url: str | None = None
     featured: bool
+
+
+class ProfileOut(BaseModel):
+    name: str
+    phone: str
+    email: str
+    github: str
+    linkedin: str
+    headline: str
+    bio: str
+    location: str
 
 
 @router.get("/health")
@@ -39,7 +50,7 @@ async def get_projects(
 
     @sync_to_async
     def _get_projects():
-        projects_qs = Project.objects.order_by("-created_at")[offset : offset + limit]
+        projects_qs = Project.objects.order_by("-created_at", "-id")[offset : offset + limit]
         results = []
         for p in projects_qs:
             title, description = localized_text(p, safe_lang)
@@ -57,3 +68,35 @@ async def get_projects(
         return results
 
     return await _get_projects()
+
+
+@router.get("/profile", response_model=ProfileOut)
+async def get_profile(lang: str = "en"):
+    safe_lang = normalize_lang(lang)
+
+    @sync_to_async
+    def _get_profile():
+        profile = PortfolioProfile.objects.first()
+        if profile is None:
+            return ProfileOut(
+                name="",
+                phone="",
+                email="",
+                github="",
+                linkedin="",
+                headline="",
+                bio="",
+                location="",
+            )
+        return ProfileOut(
+            name=profile.name,
+            phone=profile.phone,
+            email=profile.email,
+            github=profile.github,
+            linkedin=profile.linkedin,
+            headline=getattr(profile, f"headline_{safe_lang}"),
+            bio=getattr(profile, f"bio_{safe_lang}"),
+            location=getattr(profile, f"location_{safe_lang}"),
+        )
+
+    return await _get_profile()

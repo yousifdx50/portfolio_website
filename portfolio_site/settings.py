@@ -43,12 +43,17 @@ RUNNING_TESTS = (
 # Railway / Production / Local hosts
 ALLOWED_HOSTS = csv_env(
     "ALLOWED_HOSTS",
+    # Default allowed hosts.
+    # Add your custom domain here in production via environment variables.
+    # e.g., "your-railway-app.up.railway.app,yourdomain.com,www.yourdomain.com"
     "127.0.0.1,localhost,portfoliowebsite-production-4d9e.up.railway.app",
 )
 
 # CSRF trusted origins
 CSRF_TRUSTED_ORIGINS = csv_env(
     "CSRF_TRUSTED_ORIGINS",
+    # Add your custom domain here for CSRF protection.
+    # e.g., "https://your-railway-app.up.railway.app,https://yourdomain.com,https://www.yourdomain.com"
     "https://portfoliowebsite-production-4d9e.up.railway.app",
 )
 

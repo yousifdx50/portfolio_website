@@ -22,6 +22,12 @@
         </div>
     </div>
     <div class="hero-aside">
+        <div class="architecture-card" aria-label="Backend architecture overview">
+            <span class="architecture-status">● SYSTEMS ONLINE</span>
+            <strong>Reliable by design</strong>
+            <span>API / SERVICES / DATA</span>
+            <div class="architecture-flow"><i>REST</i><b>→</b><i>LOGIC</i><b>→</b><i>DATA</i></div>
+        </div>
         <p class="hero-aside-label">{{ t.connect }}</p>
         <div class="hero-socials">
             {% if profile.github %}<a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub"><svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4 1.5-4-2-5-2"/><path d="M15 22v-3.2c0-.9.3-1.6.8-2.1 2.6-.3 5.2-1.3 5.2-5.9 0-1.3-.5-2.4-1.3-3.3.1-.3.6-1.6-.1-3.3 0 0-1.1-.3-3.5 1.3-2-.6-4.1-.6-6.1 0C7.6 3.9 6.5 4.2 6.5 4.2c-.7 1.7-.2 3-.1 3.3-.8.9-1.3 2-1.3 3.3 0 4.6 2.6 5.6 5.2 5.9.3.3.6.8.7 1.5"/></svg></a>{% endif %}
@@ -32,13 +38,32 @@
     </div>
 </section>
 
+<section class="signal-strip reveal" aria-label="Portfolio overview">
+    <div><strong>{{ projects|length }}+</strong><span>{{ t.projects }}</span></div>
+    <div><strong>{{ profile.skills|length }}+</strong><span>{{ t.skills }}</span></div>
+    <div><strong>{{ profile.languages|length }}</strong><span>{{ t.languages }}</span></div>
+    <div><strong>API</strong><span>{{ t.backend }}</span></div>
+</section>
+
+<section class="content-section stack-preview">
+    <div class="section-heading-row">
+        <div><p class="kicker">{{ t.tech_stack_section }}</p><h2 class="section-title">{{ t.tech_stack_section }}</h2></div>
+        <a class="text-link" href="{% url 'about' %}{{ lang_query }}">{{ t.about }} <span aria-hidden="true">&#8594;</span></a>
+    </div>
+    <div class="stack-groups">
+        {% for group in tech_stack_groups %}
+        <article class="stack-group reveal"><h3>{{ group.title }}</h3><div class="tech-badges">{% for item in group.items %}<span>{{ item }}</span>{% endfor %}</div></article>
+        {% endfor %}
+    </div>
+</section>
+
 <section class="content-section">
-    <h2 class="section-title">{{ t.featured_projects }}</h2>
+    <div class="section-heading-row"><div><p class="kicker">{{ t.projects }}</p><h2 class="section-title">{{ t.featured_projects }}</h2></div><a class="text-link" href="{% url 'projects' %}{{ lang_query }}">{{ t.view_projects }} <span aria-hidden="true">&#8594;</span></a></div>
     <div class="grid">
         {% for project in projects %}
         <article class="card card-project reveal" data-category="{{ project.category }}">
             <div class="project-visual project-visual-{{ project.category }}">
-                {% if project.project_image %}<img src="{% static project.project_image %}" alt="{{ project.title }} project visual">{% endif %}
+                {% if project.project_image %}<img src="{% static project.project_image %}" alt="{{ project.title }} project visual" loading="lazy">{% endif %}
                 <span class="visual-label">{{ project.category_label }}</span>
                 <span class="visual-line"></span><span class="visual-line"></span><span class="visual-line"></span>
             </div>
@@ -54,6 +79,7 @@
                 </div>
                 {% if project.architecture_image %}<img class="architecture-preview" src="{% static project.architecture_image %}" alt="{{ project.title }} architecture diagram">{% endif %}
                 <div class="project-links">
+                    <a class="btn btn-secondary" href="{% url 'project_detail' project.slug %}{{ lang_query }}">{{ t.case_study }} <span aria-hidden="true">&#8594;</span></a>
                     {% if project.primary_url %}<a class="btn" href="{{ project.primary_url }}" target="_blank" rel="noopener noreferrer">{{ t.view_project }} <span aria-hidden="true">&#8594;</span></a>{% endif %}
                     {% if project.github_url %}<a class="text-link" href="{{ project.github_url }}" target="_blank" rel="noopener noreferrer">{{ t.github }}</a>{% endif %}
                     {% if project.live_url %}<a class="text-link" href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer">{{ t.live_demo }}</a>{% endif %}
