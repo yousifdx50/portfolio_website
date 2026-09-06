@@ -46,57 +46,76 @@
     <article class="card section-card contact-details reveal">
         <h2 class="section-title">{{ t.connect }}</h2>
         <ul class="contact-grid">
+            {% if profile.phone %}
             <li class="contact-card">
-                <div class="contact-iconwrap" aria-hidden="true">
+                <a class="contact-card-link" href="tel:{{ profile.phone|cut:' ' }}" aria-label="{{ t.phone }}" title="{{ t.phone }}">
+                <span class="contact-iconwrap" aria-hidden="true">
                     <svg class="icon contact-icon" viewBox="0 0 24 24" fill="none">
                         <path d="M8 5.5c.6 3.2 2.3 6.1 4.9 8.6 2.5 2.6 5.4 4.3 8.6 4.9l-2.2 2.2c-.6.6-1.6.8-2.4.5-2.5-.8-4.8-2.2-7-4.3-2.1-2.1-3.5-4.4-4.3-7-.3-.8-.1-1.8.5-2.4L8 5.5z" stroke="currentColor" stroke-width="1.8"/>
                     </svg>
-                </div>
+                </span>
                 <div class="contact-meta">
                     <p class="contact-title">{{ t.phone }}</p>
-                    <p class="contact-value"><bdi class="ltr">{{ profile.phone }}</bdi></p>
+                    <p class="contact-value">{{ t.contact_me }}</p>
                 </div>
+                </a>
             </li>
+            {% endif %}
 
+            {% if profile.email %}
             <li class="contact-card">
-                <a class="contact-iconwrap contact-icon-link" href="mailto:{{ profile.email }}" aria-label="{{ t.email }}" title="{{ t.email }}">
+                <a class="contact-card-link" href="mailto:{{ profile.email }}" aria-label="{{ t.email }}" title="{{ t.email }}">
+                    <span class="contact-iconwrap" aria-hidden="true">
                     <svg class="icon contact-icon" viewBox="0 0 24 24" fill="none">
                         <path d="M4 7h16v10H4V7z" stroke="currentColor" stroke-width="1.8"/>
                         <path d="M4.5 7.5 12 13l7.5-5.5" stroke="currentColor" stroke-width="1.8"/>
                     </svg>
-                </a>
-                <div class="contact-meta">
+                    </span>
+                    <div class="contact-meta">
                     <p class="contact-title">{{ t.email }}</p>
-                    <p class="contact-value">{{ profile.email }}</p>
-                </div>
+                    <p class="contact-value">{{ t.contact_me }}</p>
+                    </div>
+                    <span class="contact-arrow" aria-hidden="true">&#8599;</span>
+                </a>
             </li>
+            {% endif %}
 
+            {% if profile.github %}
             <li class="contact-card">
-                <a class="contact-iconwrap contact-icon-link" href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" aria-label="{{ t.github }}" title="{{ t.github }}">
+                <a class="contact-card-link" href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" aria-label="{{ t.github }}" title="{{ t.github }}">
+                    <span class="contact-iconwrap" aria-hidden="true">
                     <svg class="icon contact-icon" viewBox="0 0 24 24" fill="none">
                         <path d="M9 19c-4 1.5-4-2-5-2" stroke="currentColor" stroke-width="1.8"/>
                         <path d="M15 22v-3.2c0-.9.3-1.6.8-2.1 2.6-.3 5.2-1.3 5.2-5.9 0-1.3-.5-2.4-1.3-3.3.1-.3.6-1.6-.1-3.3 0 0-1.1-.3-3.5 1.3-2-.6-4.1-.6-6.1 0C7.6 3.9 6.5 4.2 6.5 4.2c-.7 1.7-.2 3-.1 3.3-.8.9-1.3 2-1.3 3.3 0 4.6 2.6 5.6 5.2 5.9.3.3.6.8.7 1.5" stroke="currentColor" stroke-width="1.8"/>
                     </svg>
-                </a>
-                <div class="contact-meta">
+                    </span>
+                    <div class="contact-meta">
                     <p class="contact-title">{{ t.github }}</p>
                     <p class="contact-value">{{ t.view_project }}</p>
-                </div>
+                    </div>
+                    <span class="contact-arrow" aria-hidden="true">&#8599;</span>
+                </a>
             </li>
+            {% endif %}
 
+            {% if profile.linkedin %}
             <li class="contact-card">
-                <a class="contact-iconwrap contact-icon-link" href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer" aria-label="{{ t.linkedin }}" title="{{ t.linkedin }}">
+                <a class="contact-card-link" href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer" aria-label="{{ t.linkedin }}" title="{{ t.linkedin }}">
+                    <span class="contact-iconwrap" aria-hidden="true">
                     <svg class="icon contact-icon" viewBox="0 0 24 24" fill="none">
                         <path d="M6 9v12H3V9h3z" stroke="currentColor" stroke-width="1.8"/>
                         <path d="M4.5 6.2a1.7 1.7 0 1 0 0-3.4 1.7 1.7 0 0 0 0 3.4z" stroke="currentColor" stroke-width="1.8"/>
                         <path d="M10 21V9h3v1.7c.7-1.2 2-2.1 3.8-2.1 3 0 4.2 1.9 4.2 5.1V21h-3v-6.2c0-1.6-.3-3-2.1-3-1.8 0-2.4 1.4-2.4 3V21h-3z" stroke="currentColor" stroke-width="1.8"/>
                     </svg>
-                </a>
-                <div class="contact-meta">
+                    </span>
+                    <div class="contact-meta">
                     <p class="contact-title">{{ t.linkedin }}</p>
                     <p class="contact-value">{{ t.connect }}</p>
-                </div>
+                    </div>
+                    <span class="contact-arrow" aria-hidden="true">&#8599;</span>
+                </a>
             </li>
+            {% endif %}
         </ul>
     </article>
 </section>
