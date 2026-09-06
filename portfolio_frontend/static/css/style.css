@@ -552,6 +552,16 @@ a:hover { color: var(--accent-deep); }
 .contact-card .contact-link { color: var(--muted); text-decoration: none; }
 .contact-card .contact-link:hover { color: var(--muted); }
 .contact-card-link { display: flex; align-items: center; gap: .9rem; width: 100%; min-height: 100%; color: inherit; text-decoration: none; }
+.contact-link-card { padding: 0 !important; overflow: hidden; }
+.contact-link-card .contact-card-link { padding: .9rem 1rem; }
+.about-layout > article:last-child .list-grid li { position: relative; min-height: 58px; }
+.about-layout > article:last-child .info-line { min-height: 40px; }
+.about-layout > article:last-child .info-line > a,
+.about-layout > article:last-child .about-phone-link { position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: flex-end; padding: .8rem 1rem; color: transparent; font-size: 0; text-decoration: none; }
+.about-layout > article:last-child .info-line > a::after,
+.about-layout > article:last-child .about-phone-link::after { color: var(--gold); content: "↗"; font-size: 1.05rem; }
+.about-layout > article:last-child .info-line > a:focus-visible,
+.about-layout > article:last-child .about-phone-link:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
 .contact-card-link:hover { color: inherit; }
 .contact-card-link:focus-visible { outline: 2px solid var(--gold); outline-offset: 5px; border-radius: 8px; }
 .contact-card-link .contact-meta { flex: 1; }
